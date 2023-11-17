@@ -139,7 +139,7 @@ GitHub.sublime-settings
 
 # Models Migrations
 accounts/migrations
-
+cards/migrations
 
 #Ignore all image files
 *.jpg
