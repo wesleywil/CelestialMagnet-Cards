@@ -5,3 +5,25 @@
 body{
     background-color: #262c35;
 }
+
+.animate_loading{
+    animation-name: loading_card;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+}
+
+@keyframes loading_card{
+    33% {scale:0%; opacity: 50%;}
+    33% {scale: 50%; opacity: 100%;}
+    33%{scale: 100%; opacity: 100%;}
+    100%{scale: 0%; opacity: 50%;}
+}
+
+.card_shadow{
+    box-shadow: -6px 10px 8px -8px rgba(0,0,0,0.4);
+}
+
+.card_shadow:hover{
+    box-shadow: -7px 20px 8px -8px rgba(0,0,0,0.6);
+}
