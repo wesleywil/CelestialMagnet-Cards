@@ -1,10 +1,19 @@
+"use client";
+
+import { useSelector } from "react-redux";
+import type { RootState } from "@/redux/store";
+
+// Components
 import Card from "@/components/card/card.component";
 import CardShowcase from "@/components/card_showcase/card_showcase.component";
 
 export default function Cards() {
+  const hideCardShowcase = useSelector(
+    (state: RootState) => state.utils.hideCardShowcase
+  );
   return (
     <>
-      <CardShowcase />
+      {hideCardShowcase ? "" : <CardShowcase />}
       <main
         className="p-24 flex min-h-screen flex-col items-center 
       text-[#fcfcfa] z-0"

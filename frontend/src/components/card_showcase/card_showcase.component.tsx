@@ -1,8 +1,22 @@
+import { useDispatch } from "react-redux";
 import { FaFire, FaGem } from "react-icons/fa";
+import type { AppDispatch } from "@/redux/store";
+import { switchCardShowcase } from "@/redux/utils/utils";
 
 const CardShowcase = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    const target = event.target as HTMLDivElement;
+    if (target.id === "close_panel") {
+      dispatch(switchCardShowcase());
+    }
+  };
   return (
-    <div className="absolute min-h-screen min-w-full flex flex-col items-center bg-[#262c35]/70 z-30">
+    <div
+      className="absolute min-h-screen min-w-full flex flex-col items-center bg-[#262c35]/70 z-30"
+      id="close_panel"
+      onClick={handleClick}
+    >
       <div className="md:w-[70vw] xl:w-[40vw] h-[60vh] mt-36 p-4 flex xl:justify-center bg-black/80 rounded">
         {/* Card Image and Tier Switch Buttons */}
         <div className="self-center ">
