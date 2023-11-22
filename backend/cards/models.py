@@ -1,5 +1,6 @@
 from django.db import models
 from accounts.models import User
+from PIL import Image
 
 
 class Card(models.Model):
@@ -12,7 +13,7 @@ class Card(models.Model):
     owner = models.ForeignKey(
         User, on_delete=models.SET_NULL, null=True, blank=True)
     name = models.CharField(max_length=100, unique=True)
-    tier = models.CharField(max_length=20, choices=TIER_CHOICES)
+    tier = models.ForeignKey("CardType", on_delete=models.CASCADE)
     card_type = models.CharField(max_length=50)
     description = models.TextField()
     base_image = models.ImageField(upload_to='card_bases/')
@@ -31,6 +32,23 @@ class Card(models.Model):
     #     if not self.pk:  # Check if the card is being created (not updated)
     #         self.frame_image = frame_images.get(self.tier)
     #     super((Card, self).save(*args, **kwargs))
+
+
+class CardType(models.Model):
+    title = models.CharField(max_length=100, unique=True)
+    description = models.TextField()
+    type_image = models.ImageField(upload_to='card_types/')
+
+    def __str__(self):
+        return "title: " + self.title
+
+    def save(self, *args, **kwargs):
+        super().save()
+        image = Image.open(self.type_image.path)
+        if image.height > 200 or image.height > 200:
+            new_img = (200, 200)
+            image.thumbnail(new_img)
+            image.save(self.type_image.path)
 
 
 class Transaction(models.Model):

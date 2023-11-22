@@ -1,13 +1,28 @@
 from rest_framework import serializers
 
-from .models import Card, Transaction
+from .models import Card, CardType, Transaction
+
+
+class CardTypeListingField(serializers.RelatedField):
+    def to_representation(self, value):
+        return ({
+            'id', 'title', 'description', 'type_image'
+        })
 
 
 class CardSerializer(serializers.ModelSerializer):
+    tier = CardTypeListingField(read_only=True)
+
     class Meta:
         model = Card
         fields = ['id', 'owner', 'name', 'tier', 'card_type',
                   'description', 'base_image', 'frame_image']
+
+
+class CardTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CardType
+        fields = ['id', 'title', 'description', 'type_image']
 
 
 class TransactionSerializer(serializers.ModelSerializer):
