@@ -2,6 +2,7 @@ import Menu from "@/components/menu/menu.component";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { Providers } from "./provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,8 +19,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`overflow-hidden ${inter.className}`}>
-        <Menu />
-        {children}
+        <Providers>
+          <Menu />
+          {children}
+        </Providers>
       </body>
     </html>
   );
