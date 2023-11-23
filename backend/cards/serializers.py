@@ -11,7 +11,7 @@ class CardTypeListingField(serializers.RelatedField):
 
 
 class CardSerializer(serializers.ModelSerializer):
-    tier = CardTypeListingField(read_only=True)
+    card_type = CardTypeListingField(read_only=True)
 
     class Meta:
         model = Card

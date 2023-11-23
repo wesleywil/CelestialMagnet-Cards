@@ -13,8 +13,8 @@ class Card(models.Model):
     owner = models.ForeignKey(
         User, on_delete=models.SET_NULL, null=True, blank=True)
     name = models.CharField(max_length=100, unique=True)
-    tier = models.ForeignKey("CardType", on_delete=models.CASCADE)
-    card_type = models.CharField(max_length=50)
+    tier = models.CharField(max_length=20, choices=TIER_CHOICES)
+    card_type = models.ForeignKey("CardType", on_delete=models.CASCADE)
     description = models.TextField()
     base_image = models.ImageField(upload_to='card_bases/')
     frame_image = models.ImageField(upload_to='card_frames/')

@@ -12,8 +12,8 @@ class User(AbstractUser):
 
     def save(self, *args, **kwargs):
         super().save()
-        img = Image.open(self.profile_picture.path)
+        img = Image.open(self.picture.path)
         if img.height > 150 or img.width > 150:
             new_img = (150, 150)
             img.thumbnail(new_img)
-            img.save(self.profile_picture.path)
+            img.save(self.picture.path)
