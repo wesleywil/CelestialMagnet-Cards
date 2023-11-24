@@ -17,21 +17,22 @@ class Card(models.Model):
     card_type = models.ForeignKey("CardType", on_delete=models.CASCADE)
     description = models.TextField()
     base_image = models.ImageField(upload_to='card_bases/')
-    frame_image = models.ImageField(upload_to='card_frames/')
+    frame_image = models.ImageField(
+        upload_to='card_frames/', null=True, blank=True)
 
     def __str__(self):
         return 'Card: ' + self.name
 
-    # def save(self, *args, **kwargs):
-    #     frame_images = {
-    #         'bronze': 'path_to_bronze_frame_image.png',
-    #         'silver': 'path_to_silver_frame_image.png',
-    #         'golden': 'path_to_golden_frame_image.png',
-    #         'black_diamond': 'path_to_black_diamond_frame_image.png',
-    #     }
-    #     if not self.pk:  # Check if the card is being created (not updated)
-    #         self.frame_image = frame_images.get(self.tier)
-    #     super((Card, self).save(*args, **kwargs))
+    def save(self, *args, **kwargs):
+        frame_images = {
+            'bronze': 'card_frames/bronze.png',
+            'silver': 'card_frames/silver.png',
+            'golden': 'card_frames/golden.png',
+            'black_diamond': 'black_diamond/bronze.png',
+        }
+        if not self.pk:  # Check if the card is being created (not updated)
+            self.frame_image = frame_images.get(self.tier)
+        super().save(*args, **kwargs)
 
 
 class CardType(models.Model):
