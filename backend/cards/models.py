@@ -1,6 +1,12 @@
 from django.db import models
+from django.db.models.signals import pre_delete
+from django.dispatch import receiver
 from accounts.models import User
 from PIL import Image
+
+import os
+import random
+import string
 
 
 class Card(models.Model):
@@ -12,8 +18,9 @@ class Card(models.Model):
     )
     owner = models.ForeignKey(
         User, on_delete=models.SET_NULL, null=True, blank=True)
-    name = models.CharField(max_length=100, unique=True)
-    tier = models.CharField(max_length=20, choices=TIER_CHOICES)
+    name = models.CharField(max_length=100)
+    tier = models.CharField(
+        max_length=20, choices=TIER_CHOICES, null=True, blank=True)
     card_type = models.ForeignKey("CardType", on_delete=models.CASCADE)
     description = models.TextField()
     base_image = models.ImageField(upload_to='card_bases/')
@@ -24,15 +31,23 @@ class Card(models.Model):
         return 'Card: ' + self.name
 
     def save(self, *args, **kwargs):
-        frame_images = {
-            'bronze': 'card_frames/bronze.png',
-            'silver': 'card_frames/silver.png',
-            'golden': 'card_frames/golden.png',
-            'black_diamond': 'black_diamond/bronze.png',
-        }
         if not self.pk:  # Check if the card is being created (not updated)
-            self.frame_image = frame_images.get(self.tier)
-        super().save(*args, **kwargs)
+            file_extension = os.path.splitext(self.base_image.name)[1]
+            new_filename = f"{self.name.replace(' ', '_')}{file_extension}"
+
+            #  Check if an image with same name exists
+            existing_images = Card.objects.filter(
+                base_image__contains=new_filename)
+
+            if existing_images.exists():
+                existing_image = existing_images.first()
+                self.base_image = existing_image.base_image
+            else:
+                self.base_image.name = new_filename
+            # self.base_image.name = os.path.join(new_filename)
+            super().save(*args, **kwargs)
+        else:
+            super().save(*args, **kwargs)
 
 
 class CardType(models.Model):
@@ -67,3 +82,19 @@ class Transaction(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.transaction_type} - {self.card.name}"
+
+
+@receiver(pre_delete, sender=Card)
+def delete_card_image(sender, instance, **kwargs):
+    # Check if the instance has a picture and delete it
+    if instance.base_image:
+        if os.path.isfile(instance.base_image.path):
+            os.remove(instance.base_image.path)
+
+
+@receiver(pre_delete, sender=CardType)
+def delete_cardtype_image(sender, instance, **kwargs):
+    # Check if the instance has a picture and delete it
+    if instance.type_image:
+        if os.path.isfile(instance.type_image.path):
+            os.remove(instance.type_image.path)

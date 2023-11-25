@@ -19,6 +19,14 @@ class CardSerializer(serializers.ModelSerializer):
                   'description', 'base_image', 'frame_image']
 
 
+class CardPostSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Card
+        fields = ['id', 'owner', 'name', 'tier', 'card_type',
+                  'description', 'base_image', 'frame_image']
+
+
 class CardTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = CardType
