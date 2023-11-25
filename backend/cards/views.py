@@ -8,6 +8,7 @@ from knox.auth import TokenAuthentication
 from .models import Card, CardType, Transaction
 from .serializers import (
     CardSerializer,
+    CardPostSerializer,
     CardTypeSerializer,
     TransactionSerializer,
     TransactionViewerSerializer
@@ -29,10 +30,28 @@ class CardPostView(APIView):
     authentication_classes = (TokenAuthentication,)
 
     def post(self, request, format=None):
-        serializer = CardSerializer(
-            data=request.data, context={'request': request})
+        serializer = CardPostSerializer(
+            data=request.data, context={'request': request}
+        )
         if serializer.is_valid():
-            serializer.save()
+            card_instance = serializer.validated_data
+            frame_images = {
+                'bronze': 'card_frames/bronze.png',
+                'silver': 'card_frames/silver.png',
+                'golden': 'card_frames/golden.png',
+                'black_diamond': 'card_frames/black_diamond.png',
+            }
+            existing_base_image = card_instance['base_image']
+            for tier, image_path in frame_images.items():
+                new_card = Card.objects.create(
+                    name=card_instance['name'],
+                    tier=tier,
+                    card_type=card_instance['card_type'],
+                    description=card_instance['description'],
+                    base_image=existing_base_image,
+                    frame_image=image_path
+                )
+                new_card.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

@@ -18,7 +18,7 @@ app_name = "cards_apis"
 urlpatterns = [
     # Cards
     path('', CardsView.as_view(), name='list_cards'),
-    path('', CardPostView.as_view(), name='create_card'),
+    path('create/', CardPostView.as_view(), name='create_card'),
     path('<int:pk>/', CardDetailsView.as_view(), name='details_card'),
     path('<int:pk>', CardDetailsUpdateView.as_view(), name='update_delete_card'),
     # Card Types
