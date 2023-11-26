@@ -19,7 +19,7 @@ class CardsView(APIView):
     permission_classes = [permissions.AllowAny]
 
     def get(self, request, format=None):
-        queryset = Card.objects.all().order_by('-name')
+        queryset = Card.objects.all().order_by('card_type__title')
         serializer = CardSerializer(
             queryset, many=True, context={'request': request})
         return Response(serializer.data)
