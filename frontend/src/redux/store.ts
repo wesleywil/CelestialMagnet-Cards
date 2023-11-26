@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
+import cardReducer from "./cards/cards";
 import utilReducer from "./utils/utils";
 
 export const store = configureStore({
     reducer:{
         utils:utilReducer,
+        cards:cardReducer
     }
 })
 
