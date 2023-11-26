@@ -1,16 +1,29 @@
 "use client";
 
-import { useSelector } from "react-redux";
-import type { RootState } from "@/redux/store";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "@/redux/store";
+import { fetchCards } from "@/redux/cards/cards";
 
 // Components
 import Card from "@/components/card/card.component";
 import CardShowcase from "@/components/card_showcase/card_showcase.component";
+import { Tier } from "@/utils/interfaces";
 
 export default function Cards() {
   const hideCardShowcase = useSelector(
     (state: RootState) => state.utils.hideCardShowcase
   );
+  const status = useSelector((state: RootState) => state.cards.status);
+  const cards = useSelector((state: RootState) => state.cards.cards);
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    console.log("cards page effect!");
+    if (status === "idle") {
+      dispatch(fetchCards());
+    }
+  }, [status]);
   return (
     <>
       {hideCardShowcase ? "" : <CardShowcase />}
@@ -19,16 +32,12 @@ export default function Cards() {
       text-[#fcfcfa] z-0"
       >
         <h1 className="text-3xl font-semibold ">Celestial Magnet Cards</h1>
-        <div className="h-[70vh] mt-12 p-2 grid md:grid-cols-3 xl:grid-cols-4 gap-4 overflow-y-auto">
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
+        <div className="xl:w-11/12 mx-auto h-[70vh] mt-12 p-2 grid md:grid-cols-3 xl:grid-cols-6 gap-4 overflow-y-auto">
+          {cards.length
+            ? cards
+                .filter((item) => item.tier === Tier.Bronze!)
+                .map((item) => <Card key={item.id} card={item} />)
+            : ""}
         </div>
       </main>
     </>
