@@ -148,6 +148,5 @@ cards/migrations
 
 #Allow the default image
 !static/images/profiles/default.jpg
-!static/images/card_bases/*
 !static/images/card_frames/*
 !static/images/card_types/*
