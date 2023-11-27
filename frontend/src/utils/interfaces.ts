@@ -25,6 +25,7 @@ export interface CardType {
   title: string;
   description: string;
   type_image?: string;
+  color:string;
 }
 
 export interface Transaction {
