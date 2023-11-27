@@ -1,14 +1,23 @@
-import { useDispatch } from "react-redux";
-import { FaFire, FaGem } from "react-icons/fa";
-import type { AppDispatch } from "@/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { FaGem } from "react-icons/fa";
+import type { AppDispatch, RootState } from "@/redux/store";
 import { switchCardShowcase } from "@/redux/utils/utils";
+import { resetGroupCards, selectCard } from "@/redux/cards/cards";
+
+// Components
+import CardShowcaseInfo from "../card_showcase_info/card_showcase_info.component";
+import CardShowcaseImage from "../card_showcase_image/card_showcase_image.component";
 
 const CardShowcase = () => {
+  const groupCards = useSelector((state: RootState) => state.cards.group_cards);
+  const card = useSelector((state: RootState) => state.cards.card);
   const dispatch = useDispatch<AppDispatch>();
+
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
     const target = event.target as HTMLDivElement;
     if (target.id === "close_panel") {
       dispatch(switchCardShowcase());
+      dispatch(resetGroupCards());
     }
   };
   return (
@@ -20,50 +29,50 @@ const CardShowcase = () => {
       <div className="md:w-[70vw] xl:w-[40vw] h-[60vh] mt-36 p-4 flex xl:justify-center bg-black/80 rounded">
         {/* Card Image and Tier Switch Buttons */}
         <div className="self-center ">
-          <div className="w-72 h-96 bg-red-400 rounded"></div>
+          {Object.keys(card).length === 0 ? (
+            <CardShowcaseImage
+              card_img={groupCards[0].base_image}
+              card_frame={groupCards[0].frame_image!}
+            />
+          ) : (
+            <CardShowcaseImage
+              card_img={card.base_image}
+              card_frame={card.frame_image!}
+            />
+          )}
           <div className="h-12 my-2 flex justify-center gap-2 text-3xl">
-            <button className="p-2 flex justify-center items-center bg-amber-950 hover:bg-amber-800 rounded-full transform duration-500 ease-in-out">
+            <button
+              onClick={() => dispatch(selectCard("bronze"))}
+              className="p-2 flex justify-center items-center bg-amber-950 hover:bg-amber-800 rounded-full transform duration-500 ease-in-out"
+            >
               <FaGem />
             </button>
-            <button className="p-2 flex justify-center items-center bg-slate-400 hover:bg-slate-200 rounded-full transform duration-500 ease-in-out">
+            <button
+              onClick={() => dispatch(selectCard("silver"))}
+              className="p-2 flex justify-center items-center bg-slate-400 hover:bg-slate-200 rounded-full transform duration-500 ease-in-out"
+            >
               <FaGem />
             </button>
-            <button className="p-2 flex justify-center items-center bg-amber-500 hover:bg-amber-300 rounded-full transform duration-500 ease-in-out">
+            <button
+              onClick={() => dispatch(selectCard("golden"))}
+              className="p-2 flex justify-center items-center bg-amber-500 hover:bg-amber-300 rounded-full transform duration-500 ease-in-out"
+            >
               <FaGem />
             </button>
-            <button className="p-2 flex justify-center items-center bg-black hover:bg-slate-700 border rounded-full transform duration-500 ease-in-out">
+            <button
+              onClick={() => dispatch(selectCard("black_diamond"))}
+              className="p-2 flex justify-center items-center bg-black hover:bg-slate-700 border rounded-full transform duration-500 ease-in-out"
+            >
               <FaGem />
             </button>
           </div>
         </div>
         {/* Card Info */}
-        <div className="self-center text-center">
-          <div className="w-[22rem] h-96 p-2 text-[#fcfcfa]">
-            <h1 className="text-2xl">Card Name</h1>
-            <div className="px-4 flex gap-2 text-xs">
-              <div className="self-center mb-1 text-red-500 text-xl rounded-full">
-                <FaFire />
-              </div>
-              <span className="self-center text-red-500">Fire Type</span>
-            </div>
-            <p className="my-2 text-center">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus
-              earum minima consequuntur. Voluptatem hic voluptatibus
-              necessitatibus, odit dolorem illo laudantium reiciendis
-              dignissimos, iste similique omnis, libero eveniet facilis optio
-              saepe!
-            </p>
-            <div className="mt-8">
-              <h1>Status</h1>
-              <h1>UNAVAILABLE</h1>
-            </div>
-            <div className="mt-4">
-              <h1>Owned by</h1>
-              <h1 className="text-2xl uppercase font-semibold">User Name</h1>
-            </div>
-          </div>
-          <div className="h-12 my-2 flex justify-center gap-2"></div>
-        </div>
+        {Object.keys(card).length === 0 ? (
+          <CardShowcaseInfo card={groupCards[0]} />
+        ) : (
+          <CardShowcaseInfo card={card} />
+        )}
       </div>
     </div>
   );
