@@ -6,12 +6,20 @@ from .models import Card, CardType, Transaction
 class CardTypeListingField(serializers.RelatedField):
     def to_representation(self, value):
         return ({
-            'id', 'title', 'description', 'type_image'
+            'id': value.id, 'title': value.title, 'description': value.description, 'type_image': value.type_image.url, 'color': value.color
+        })
+
+
+class UserTypeListingField(serializers.RelatedField):
+    def to_representation(self, value):
+        return ({
+            'id': value.id, 'username': value.username, 'email': value.email
         })
 
 
 class CardSerializer(serializers.ModelSerializer):
     card_type = CardTypeListingField(read_only=True)
+    owner = UserTypeListingField(read_only=True)
 
     class Meta:
         model = Card
@@ -30,7 +38,7 @@ class CardPostSerializer(serializers.ModelSerializer):
 class CardTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = CardType
-        fields = ['id', 'title', 'description', 'type_image']
+        fields = ['id', 'title', 'description', 'color', 'type_image']
 
 
 class TransactionSerializer(serializers.ModelSerializer):

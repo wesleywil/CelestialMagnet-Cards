@@ -53,6 +53,7 @@ class Card(models.Model):
 class CardType(models.Model):
     title = models.CharField(max_length=100, unique=True)
     description = models.TextField()
+    color = models.CharField(max_length=10, default="black")
     type_image = models.ImageField(upload_to='card_types/')
 
     def __str__(self):
