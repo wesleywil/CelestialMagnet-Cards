@@ -9,13 +9,14 @@ import { fetchCards } from "@/redux/cards/cards";
 import Card from "@/components/card/card.component";
 import CardShowcase from "@/components/card_showcase/card_showcase.component";
 import { Tier } from "@/utils/interfaces";
+import CardTypeFilter from "@/components/card_type_filter/card_type_filter.component";
 
 export default function Cards() {
   const hideCardShowcase = useSelector(
     (state: RootState) => state.utils.hideCardShowcase
   );
   const status = useSelector((state: RootState) => state.cards.status);
-  const cards = useSelector((state: RootState) => state.cards.cards);
+  const cards = useSelector((state: RootState) => state.cards.filtered_cards);
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
@@ -32,7 +33,8 @@ export default function Cards() {
       text-[#fcfcfa] z-0"
       >
         <h1 className="text-3xl font-semibold ">Celestial Magnet Cards</h1>
-        <div className="xl:w-11/12 mx-auto h-[70vh] mt-12 p-2 grid md:grid-cols-3 xl:grid-cols-6 gap-4 overflow-y-auto">
+        <CardTypeFilter />
+        <div className="xl:w-11/12 mx-auto h-[70vh] p-2 grid md:grid-cols-3 xl:grid-cols-6 gap-4 overflow-y-auto">
           {cards.length
             ? cards
                 .filter((item) => item.tier === Tier.Bronze!)

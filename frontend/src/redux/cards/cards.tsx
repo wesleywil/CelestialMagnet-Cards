@@ -6,6 +6,7 @@ export interface CardState {
   card: Card;
   cards: Card[];
   group_cards: Card[];
+  filtered_cards: Card[];
   status: string;
   error: string;
 }
@@ -14,6 +15,7 @@ const initialState: CardState = {
   card: {} as Card,
   cards: [],
   group_cards: [],
+  filtered_cards: [],
   status: "idle",
   error: "",
 };
@@ -50,6 +52,19 @@ export const cardSlice = createSlice({
       state.group_cards = [];
       state.card = {} as Card;
     },
+    filterByCardType: (state, action: PayloadAction<string>) => {
+      const filteredCards = state.cards.filter((item) => {
+        if (typeof item.card_type !== "number") {
+          return item.card_type.title === action.payload;
+        } else {
+          return true;
+        }
+      });
+      state.filtered_cards = filteredCards;
+    },
+    resetFilter: (state) => {
+      state.filtered_cards = state.cards;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -61,6 +76,7 @@ export const cardSlice = createSlice({
         (state, action: PayloadAction<Card[] | []>) => {
           state.status = "cards retrieved successfully";
           state.cards = action.payload;
+          state.filtered_cards = action.payload;
         }
       )
       .addCase(fetchCards.rejected, (state, action: PayloadAction<any>) => {
@@ -70,7 +86,12 @@ export const cardSlice = createSlice({
   },
 });
 
-export const { selectGroupCards, selectCard, resetGroupCards } =
-  cardSlice.actions;
+export const {
+  selectGroupCards,
+  selectCard,
+  resetGroupCards,
+  filterByCardType,
+  resetFilter,
+} = cardSlice.actions;
 
 export default cardSlice.reducer;
