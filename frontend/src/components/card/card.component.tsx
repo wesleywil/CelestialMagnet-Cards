@@ -2,15 +2,21 @@ import { useDispatch } from "react-redux";
 import type { AppDispatch } from "@/redux/store";
 import { switchCardShowcase } from "@/redux/utils/utils";
 import { selectGroupCards } from "@/redux/cards/cards";
-import { Card } from "@/utils/interfaces";
+import { Card, User } from "@/utils/interfaces";
 
 const Card = ({ card }: { card: Card }) => {
+  let owner: User | undefined = {} as User;
+
   const dispatch = useDispatch<AppDispatch>();
 
   const handleCardShowcase = () => {
     dispatch(selectGroupCards(card.name));
     dispatch(switchCardShowcase());
   };
+
+  if (typeof card.owner !== "number") {
+    owner = card.owner;
+  }
   return (
     <div onClick={handleCardShowcase}>
       <h2 className="mr-10 text-base text-center uppercase">{card.name}</h2>
@@ -34,7 +40,7 @@ const Card = ({ card }: { card: Card }) => {
       </div>
 
       <h3 className="text-xs text-[#7bc6a2]">
-        {card.owner ? `Owned by: ${card.owner}` : "No ownership"}
+        {card.owner ? `Owned by: ${owner?.username}` : "No ownership"}
       </h3>
     </div>
   );
