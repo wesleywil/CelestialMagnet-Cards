@@ -3,13 +3,15 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "@/redux/store";
-import { fetchCards } from "@/redux/cards/cards";
+import { fetchCards, selectGroupCards } from "@/redux/cards/cards";
 
 // Components
 import Card from "@/components/card/card.component";
 import CardShowcase from "@/components/card_showcase/card_showcase.component";
 import { Tier } from "@/utils/interfaces";
 import CardTypeFilter from "@/components/card_type_filter/card_type_filter.component";
+import { switchCardShowcase } from "@/redux/utils/utils";
+import CardShowcaseMenu from "@/components/card_showcase_menu/card_showcase_menu.component";
 
 export default function Cards() {
   const hideCardShowcase = useSelector(
@@ -25,9 +27,20 @@ export default function Cards() {
       dispatch(fetchCards());
     }
   }, [status]);
+
+  const handleCardShowcase = (cardname: string) => {
+    dispatch(selectGroupCards(cardname));
+    dispatch(switchCardShowcase());
+  };
   return (
     <>
-      {hideCardShowcase ? "" : <CardShowcase />}
+      {hideCardShowcase ? (
+        ""
+      ) : (
+        <CardShowcase>
+          <CardShowcaseMenu />
+        </CardShowcase>
+      )}
       <main
         className="p-24 flex min-h-screen flex-col items-center 
       text-[#fcfcfa] z-0"
@@ -38,7 +51,13 @@ export default function Cards() {
           {cards.length
             ? cards
                 .filter((item) => item.tier === Tier.Bronze!)
-                .map((item) => <Card key={item.id} card={item} />)
+                .map((item) => (
+                  <Card
+                    key={item.id}
+                    card={item}
+                    action={() => handleCardShowcase(item.name)}
+                  />
+                ))
             : ""}
         </div>
       </main>
