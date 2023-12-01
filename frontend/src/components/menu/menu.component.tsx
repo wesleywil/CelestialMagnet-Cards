@@ -35,6 +35,12 @@ const Menu = () => {
           >
             Cards
           </Link>
+          <Link
+            href="/mycards"
+            className="mt-8 text-xl text-[#fcfcfa] hover:text-[#7bc6a2] font-semibold transform duration-500 ease-in-out"
+          >
+            My Cards
+          </Link>
         </div>
       </div>
     </div>

@@ -4,14 +4,16 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "@/redux/store";
 import { fetchCards, selectGroupCards } from "@/redux/cards/cards";
+import { Tier } from "@/utils/interfaces";
+import { switchCardShowcase } from "@/redux/utils/utils";
 
 // Components
 import Card from "@/components/card/card.component";
 import CardShowcase from "@/components/card_showcase/card_showcase.component";
-import { Tier } from "@/utils/interfaces";
 import CardTypeFilter from "@/components/card_type_filter/card_type_filter.component";
-import { switchCardShowcase } from "@/redux/utils/utils";
 import CardShowcaseMenu from "@/components/card_showcase_menu/card_showcase_menu.component";
+import CardShowcaseImage from "@/components/card_showcase_image/card_showcase_image.component";
+import CardShowcaseInfo from "@/components/card_showcase_info/card_showcase_info.component";
 
 export default function Cards() {
   const hideCardShowcase = useSelector(
@@ -19,6 +21,8 @@ export default function Cards() {
   );
   const status = useSelector((state: RootState) => state.cards.status);
   const cards = useSelector((state: RootState) => state.cards.filtered_cards);
+  const groupCards = useSelector((state: RootState) => state.cards.group_cards);
+  const card = useSelector((state: RootState) => state.cards.card);
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
@@ -38,7 +42,31 @@ export default function Cards() {
         ""
       ) : (
         <CardShowcase>
-          <CardShowcaseMenu />
+          <div className="md:w-[70vw] xl:w-[40vw] h-[60vh] mt-36 p-4 flex xl:justify-center bg-black/80 rounded">
+            {/* Card Image and Tier Switch Buttons */}
+
+            <div className="self-center ">
+              {Object.keys(card).length === 0 ? (
+                <CardShowcaseImage
+                  card_img={groupCards[0].base_image}
+                  card_frame={groupCards[0].frame_image!}
+                />
+              ) : (
+                <CardShowcaseImage
+                  card_img={card.base_image}
+                  card_frame={card.frame_image!}
+                />
+              )}
+              {/* Card Showcase Menu */}
+              <CardShowcaseMenu />
+            </div>
+            {/* Card Showcase Info */}
+            {Object.keys(card).length === 0 ? (
+              <CardShowcaseInfo card={groupCards[0]} />
+            ) : (
+              <CardShowcaseInfo card={card} />
+            )}
+          </div>
         </CardShowcase>
       )}
       <main
