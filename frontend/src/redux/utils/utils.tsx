@@ -2,10 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export interface UtilState {
   hideCardShowcase: boolean;
+  hideTradeSellPanel: boolean;
 }
 
 const initialState: UtilState = {
   hideCardShowcase: true,
+  hideTradeSellPanel: true,
 };
 
 export const utilSlice = createSlice({
@@ -15,9 +17,12 @@ export const utilSlice = createSlice({
     switchCardShowcase: (state) => {
       state.hideCardShowcase = !state.hideCardShowcase;
     },
+    switchCardSellTrade: (state) => {
+      state.hideTradeSellPanel = !state.hideTradeSellPanel;
+    },
   },
 });
 
-export const { switchCardShowcase } = utilSlice.actions;
+export const { switchCardShowcase, switchCardSellTrade } = utilSlice.actions;
 
 export default utilSlice.reducer;
