@@ -14,10 +14,15 @@ import NotAuthenticated from "@/components/not_authenticated/not_authenticated.c
 import Loading from "@/components/loading/loading.component";
 import CardShowcaseImage from "@/components/card_showcase_image/card_showcase_image.component";
 import CardShowcaseInfo from "@/components/card_showcase_info/card_showcase_info.component";
+import CardShowcaseTradeBtn from "@/components/card_showcase_trade_btn/card_showcase_trade_btn.component";
+import CardTradeSellPanel from "@/components/card_trade_sell_panel/card_trade_sell_panel.component";
 
 export default function MyCards() {
   const hideCardShowcase = useSelector(
     (state: RootState) => state.utils.hideCardShowcase
+  );
+  const hideTradeSellPanel = useSelector(
+    (state: RootState) => state.utils.hideTradeSellPanel
   );
   const status = useSelector((state: RootState) => state.usercards.status);
   const userStatus = useSelector((state: RootState) => state.user.status);
@@ -50,6 +55,8 @@ export default function MyCards() {
   } else {
     return (
       <>
+        {hideTradeSellPanel ? <CardTradeSellPanel /> : ""}
+
         {hideCardShowcase ? (
           ""
         ) : (
@@ -62,7 +69,9 @@ export default function MyCards() {
                   card_img={card.base_image}
                   card_frame={card.frame_image!}
                 />
+                <CardShowcaseTradeBtn />
               </div>
+
               {/* Card Showcase Info */}
               <CardShowcaseInfo card={card} />
             </div>
