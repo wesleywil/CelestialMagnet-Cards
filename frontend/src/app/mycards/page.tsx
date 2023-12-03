@@ -69,7 +69,7 @@ export default function MyCards() {
                   card_img={card.base_image}
                   card_frame={card.frame_image!}
                 />
-                <CardShowcaseTradeBtn />
+                <CardShowcaseTradeBtn cardId={card.id!} />
               </div>
 
               {/* Card Showcase Info */}

@@ -1,20 +1,28 @@
+import { useSelector } from "react-redux";
+import type { RootState } from "@/redux/store";
+
+// Components
+import CardShowcaseImage from "../card_showcase_image/card_showcase_image.component";
+
 const CardSell = () => {
+  const card = useSelector((state: RootState) => state.usercards.card);
   return (
     <div className="w-11/12 md:w-[60vw] h-[70vh] mt-8 p-2 flex flex-col gap-2 border rounded">
       <h1 className="text-3xl font-bold text-[#fcfcfa] text-center border-b">
         SELL
       </h1>
       <div className="flex gap-2 justify-center">
-        <div>
-          <img src="http://dummyimage.com/300x400" alt="" />
-        </div>
-        <form className="w-[300px] h-[400px] p-4 flex flex-col justify-between text-3xl text-[#fcfcfa]">
+        <CardShowcaseImage
+          card_frame={card.frame_image!}
+          card_img={card.base_image}
+        />
+        <form className="w-[300px] h-80 p-4 flex flex-col justify-between text-3xl text-[#fcfcfa]">
           <div className="flex flex-col gap-2">
             <span className="w-full px-2 py-1 bg-[#fcfcfa] text-[#262c35] text-center rounded">
-              Card Name
+              {card.name}
             </span>
             <span className="w-full px-2 py-1 bg-[#fcfcfa] text-[#262c35] text-center rounded">
-              Tier
+              {card.tier}
             </span>
             <input
               type="text"
