@@ -25,6 +25,21 @@ class CardsView(APIView):
         return Response(serializer.data)
 
 
+class CardsByNameView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request, format=None):
+        card_name = request.query_params.get('name')
+        if card_name:
+            queryset = Card.objects.filter(
+                name__icontains=card_name).order_by('card_type__title')
+        else:
+            queryset = []
+        serializer = CardSerializer(
+            queryset, many=True, context={'request': request})
+        return Response(serializer.data)
+
+
 class CardUserView(APIView):
     permission_classes = [permissions.IsAuthenticated]
     authentication_classes = (TokenAuthentication, )
