@@ -31,6 +31,18 @@ export const fetchCards = createAsyncThunk("cards/fetchCards", async () => {
   return cards;
 });
 
+export const fetchCardsByName = createAsyncThunk(
+  "cards/fetchCardsByName",
+  async (cardName: string) => {
+    const res = await fetch(`${url}/search/?name=${cardName}`);
+    if (!res.ok) {
+      throw new Error("Failed to fetch cards by name");
+    }
+    const cards: Card[] = await res.json();
+    return cards;
+  }
+);
+
 export const cardSlice = createSlice({
   name: "cards",
   initialState,
@@ -82,7 +94,24 @@ export const cardSlice = createSlice({
       .addCase(fetchCards.rejected, (state, action: PayloadAction<any>) => {
         state.status = "error while trying to retrieve cards";
         state.error = String(action.payload);
-      });
+      })
+      .addCase(fetchCardsByName.pending, (state) => {
+        state.status = "trying to fetch cards by name";
+      })
+      .addCase(
+        fetchCardsByName.fulfilled,
+        (state, action: PayloadAction<Card[] | []>) => {
+          state.status = "cards by name retrieved successfully";
+          state.filtered_cards = action.payload;
+        }
+      )
+      .addCase(
+        fetchCardsByName.rejected,
+        (state, action: PayloadAction<any>) => {
+          state.status = "error while trying to retrieve cards by name";
+          state.error = String(action.payload);
+        }
+      );
   },
 });
 
