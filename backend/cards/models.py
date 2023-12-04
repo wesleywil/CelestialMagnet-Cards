@@ -5,8 +5,6 @@ from accounts.models import User
 from PIL import Image
 
 import os
-import random
-import string
 
 
 class Card(models.Model):
@@ -28,7 +26,7 @@ class Card(models.Model):
         upload_to='card_frames/', null=True, blank=True)
 
     def __str__(self):
-        return 'Card: ' + self.name
+        return f"Card: {self.name} - {self.card_type.title} - {self.tier}"
 
     def save(self, *args, **kwargs):
         if not self.pk:  # Check if the card is being created (not updated)
@@ -70,11 +68,14 @@ class CardType(models.Model):
 
 class Transaction(models.Model):
     TRANSACTION_TYPES = (
-        ('purchase', 'Purchase'),
+        ('sell', 'Sell'),
         ('trade', 'Trade')
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    card = models.ForeignKey('Card', on_delete=models.CASCADE)
+    owner_card = models.ForeignKey(
+        'Card', related_name='owner_card', on_delete=models.CASCADE)
+    desired_card = models.ForeignKey(
+        'Card', related_name='desired_card', on_delete=models.CASCADE, blank=True, null=True)
     transaction_type = models.CharField(
         max_length=20, choices=TRANSACTION_TYPES)
     price = models.DecimalField(
