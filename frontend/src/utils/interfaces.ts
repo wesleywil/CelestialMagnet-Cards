@@ -30,9 +30,10 @@ export interface CardType {
 
 export interface Transaction {
   user?: User | number;
-  card: Card | number;
+  owner_card: Card | number;
+  desired_card?: Card | number;
   transaction_type: TransactionType;
-  price: number;
+  price?: number;
   timestamp?: Date;
 }
 
@@ -44,6 +45,6 @@ export enum Tier {
 }
 
 export enum TransactionType {
-  Purchase = "purchase",
+  Sell = "sell",
   Trade = "trade",
 }
