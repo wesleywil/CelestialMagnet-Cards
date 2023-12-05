@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { FaArrowRight, FaSearch } from "react-icons/fa";
+import { FaArrowRight, FaSearch, FaTimes } from "react-icons/fa";
 import { AppDispatch, RootState } from "@/redux/store";
-import { fetchCardsByName } from "@/redux/cards/cards";
+import { fetchCardsByName, resetCard } from "@/redux/cards/cards";
 
 // Components
 import CardShowcaseImage from "../card_showcase_image/card_showcase_image.component";
@@ -11,6 +11,7 @@ import CardTradeSearchList from "../card_trade_search_list/card_trade_search_lis
 const CardTrade = () => {
   const [search, setSearch] = useState("");
   const card = useSelector((state: RootState) => state.usercards.card);
+  const card_selected = useSelector((state: RootState) => state.cards.card);
   const dispatch = useDispatch<AppDispatch>();
 
   const handleSearchCard = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -53,19 +54,26 @@ const CardTrade = () => {
               </button>
             </div>
             {/* Card Request */}
-            {search.length ? (
-              <CardTradeSearchList />
-            ) : (
+            {Object.keys(card_selected).length !== 0 ? (
               <>
-                <img
-                  src="http://dummyimage.com/300x400"
-                  alt="desired trade card"
-                  className="w-72 h-96"
+                <div className="w-full py-1 px-1 flex justify-end text-base">
+                  <button
+                    onClick={() => dispatch(resetCard())}
+                    className="p-1 hover:text-[#262c35] bg-[#fcfcfa] hover:bg-[#7bc6a2] rounded-full transform duration-500 ease-in-out"
+                  >
+                    <FaTimes />
+                  </button>
+                </div>
+                <CardShowcaseImage
+                  card_frame={card_selected.frame_image!}
+                  card_img={card_selected.base_image}
                 />
                 <h2 className="text-2xl font-bold text-center">
-                  Card Name - Tier
+                  {card_selected.name} - {card_selected.tier}
                 </h2>
               </>
+            ) : (
+              <CardTradeSearchList />
             )}
           </div>
           {/* Search Card List */}

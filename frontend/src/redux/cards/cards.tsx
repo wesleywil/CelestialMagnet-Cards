@@ -60,6 +60,15 @@ export const cardSlice = createSlice({
       state.card =
         selectedCard !== undefined ? selectedCard : state.group_cards[0];
     },
+    selectCardById: (state, action: PayloadAction<number>) => {
+      const selectedCard = state.filtered_cards.find(
+        (item) => item.id === action.payload
+      );
+      state.card = selectedCard !== undefined ? selectedCard : ({} as Card);
+    },
+    resetCard: (state) => {
+      state.card = {} as Card;
+    },
     resetGroupCards: (state) => {
       state.group_cards = [];
       state.card = {} as Card;
@@ -118,6 +127,8 @@ export const cardSlice = createSlice({
 export const {
   selectGroupCards,
   selectCard,
+  selectCardById,
+  resetCard,
   resetGroupCards,
   filterByCardType,
   resetFilter,
