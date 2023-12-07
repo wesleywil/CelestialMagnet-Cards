@@ -83,7 +83,7 @@ class Transaction(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user.username} - {self.transaction_type} - {self.card.name}"
+        return f"{self.user.username} - {self.transaction_type} - Owner Card:{self.owner_card.name} - Desired Card: {self.desired_card.name}"
 
 
 @receiver(pre_delete, sender=Card)

@@ -44,8 +44,8 @@ class CardTypeSerializer(serializers.ModelSerializer):
 class TransactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transaction
-        fields = ['id', 'user', 'card',
-                  'transaction_type', 'price', 'timestamp']
+        fields = ['id', 'user', 'owner_card', 'desired_card',
+                  'transaction_type', 'price']
 
 
 class UserListingField(serializers.RelatedField):
@@ -58,23 +58,39 @@ class UserListingField(serializers.RelatedField):
 
 
 class CardListingField(serializers.RelatedField):
+
     def to_representation(self, value):
+        card_type = value.card_type
         return ({
-            'id',
-            'name',
-            'tier',
-            'card_type',
-            'description',
-            'base_image',
-            'frame_image',
+            'id': value.id,
+            'name': value.name,
+            'tier': value.tier,
+            'card_type': {
+                'id': card_type.id,
+                'title': card_type.title,
+                'description': card_type.description,
+                'color': card_type.color,
+            },
+            'description': value.description,
+            'base_image': self.get_image_url(value.base_image),
+            'frame_image': self.get_image_url(value.frame_image),
         })
+
+    def get_image_url(self, image_field):
+        if image_field:
+            try:
+                return image_field.url
+            except ValueError:
+                return None
+        return None
 
 
 class TransactionViewerSerializer(serializers.ModelSerializer):
     user = UserListingField(read_only=True)
-    card = CardListingField(read_only=True)
+    owner_card = CardListingField(read_only=True)
+    desired_card = CardListingField(read_only=True)
 
     class Meta:
         model = Transaction
-        fields = ['id', 'user', 'card',
+        fields = ['id', 'user', 'owner_card', 'desired_card',
                   'transaction_type', 'price', 'timestamp']
