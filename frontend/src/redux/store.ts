@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import cardReducer from "./cards/cards";
+import transactionReducer from "./transactions/transactions";
 import userReducer from "./user/user";
 import userCardReducer from "./user_cards/user_cards";
 import utilReducer from "./utils/utils";
@@ -9,7 +10,8 @@ export const store = configureStore({
         user:userReducer,
         utils:utilReducer,
         cards:cardReducer,
-        usercards:userCardReducer
+        usercards:userCardReducer,
+        transactions:transactionReducer,
     }
 })
 
