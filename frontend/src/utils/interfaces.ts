@@ -29,6 +29,7 @@ export interface CardType {
 }
 
 export interface Transaction {
+  id?:number;
   user?: User | number;
   owner_card: Card | number;
   desired_card?: Card | number;
