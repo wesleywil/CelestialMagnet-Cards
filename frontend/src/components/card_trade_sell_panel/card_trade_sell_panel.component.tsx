@@ -1,7 +1,8 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import type { AppDispatch } from "@/redux/store";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "@/redux/store";
 import { switchCardSellTrade } from "@/redux/utils/utils";
+import { retrieveUser } from "@/redux/user/user";
 
 // Components
 import CardSell from "../card_sell/card_sell.component";
@@ -9,6 +10,7 @@ import CardTrade from "../card_trade/card_trade.component";
 
 const CardTradeSellPanel = () => {
   const [trade, setTrade] = useState<boolean>(false);
+  const userstatus = useSelector((state: RootState) => state.user.status);
   const dispatch = useDispatch<AppDispatch>();
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -17,6 +19,11 @@ const CardTradeSellPanel = () => {
       dispatch(switchCardSellTrade());
     }
   };
+  useEffect(() => {
+    if (userstatus === "idle") {
+      dispatch(retrieveUser());
+    }
+  }, []);
   return (
     <div
       id="close_panel"
