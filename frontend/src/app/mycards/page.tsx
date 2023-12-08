@@ -55,7 +55,7 @@ export default function MyCards() {
   } else {
     return (
       <>
-        {hideTradeSellPanel ? <CardTradeSellPanel /> : ""}
+        {hideTradeSellPanel ? "" : <CardTradeSellPanel />}
 
         {hideCardShowcase ? (
           ""

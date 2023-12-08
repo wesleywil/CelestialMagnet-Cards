@@ -21,7 +21,7 @@ export default function SignIn() {
     ) {
       localStorage.setItem("token", res.payload.token);
       localStorage.setItem("tokenExpiry", res.payload.expiry);
-      window.location.href = "/cards";
+      window.location.href = "/mycards";
     }
     if (res.payload.non_field_errors) {
       setMessage("Username or Password incorrect!");
