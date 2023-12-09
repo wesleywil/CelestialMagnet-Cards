@@ -10,6 +10,8 @@ from .views import (
     CardTypePostView,
     CardTypeDetailsView,
     CardTypeDetailsUpdateView,
+    TransactionListView,
+    TransactionDetailsView,
     TransactionViewSet,
     TransactionDetailsViewSet,
 
@@ -33,7 +35,12 @@ urlpatterns = [
     path('types/<int:pk>/', CardTypeDetailsUpdateView.as_view(),
          name='update_delete_card_types'),
     # Transactions
-    path('transactions/', TransactionViewSet.as_view(), name='transactions'),
-    path('transactions/<int:pk>/', TransactionDetailsViewSet.as_view(),
+    path('transactions/', TransactionListView.as_view(), name='transactions'),
+    path('transactions/<int:pk>/', TransactionDetailsView.as_view(),
+         name='details_transactions'),
+    path('transactions/user/', TransactionViewSet.as_view(),
+         name='user_transactions'),
+    path('transactions/user/<int:pk>/', TransactionDetailsViewSet.as_view(),
          name='details_transactions')
+
 ]

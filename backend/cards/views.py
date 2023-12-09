@@ -184,6 +184,32 @@ class CardTypeDetailsUpdateView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+class TransactionListView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request, format=None):
+        queryset = Transaction.objects.all().order_by('-id')
+        serializer = TransactionViewerSerializer(
+            queryset, many=True, context={"request": request})
+        return Response(serializer.data)
+
+
+class TransactionDetailsView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def get_object(self, pk):
+        try:
+            return Transaction.objects.get(pk=pk)
+        except Transaction.DoesNotExist:
+            return Http404
+
+    def get(self, request, pk, format=None):
+        transaction = self.get_object(pk)
+        serializer = TransactionViewerSerializer(
+            transaction, context={"request": request})
+        return Response(serializer.data)
+
+
 class TransactionViewSet(APIView):
     permission_classes = [permissions.IsAuthenticated]
     authentication_classes = (TokenAuthentication,)
