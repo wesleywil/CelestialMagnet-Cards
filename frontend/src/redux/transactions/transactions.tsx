@@ -22,7 +22,19 @@ const url = "http://localhost:8000/api/cards";
 export const fetchTransactions = createAsyncThunk(
   "transactions/fetchTransactions",
   async () => {
-    const res = await fetch(`${url}/transactions/`, {
+    const res = await fetch(`${url}/transactions/`, {});
+    if (!res.ok) {
+      throw new Error("Failed to fetch transactions");
+    }
+    const transactions = await res.json();
+    return transactions;
+  }
+);
+
+export const fetchUserTransactions = createAsyncThunk(
+  "transactions/fetchUserTransactions",
+  async () => {
+    const res = await fetch(`${url}/transactions/user/`, {
       headers: headers,
       credentials: "include",
     });
@@ -73,6 +85,23 @@ export const transactionSlice = createSlice({
         fetchTransactions.rejected,
         (state, action: PayloadAction<any>) => {
           state.status = "failed to fetched the transactions";
+          state.error = String(action.payload);
+        }
+      )
+      .addCase(fetchUserTransactions.pending, (state) => {
+        state.status = "fetching user transactions";
+      })
+      .addCase(
+        fetchUserTransactions.fulfilled,
+        (state, action: PayloadAction<Transaction[] | []>) => {
+          state.status = "user transactions fetched";
+          state.transactions = action.payload;
+        }
+      )
+      .addCase(
+        fetchUserTransactions.rejected,
+        (state, action: PayloadAction<any>) => {
+          state.status = "failed to fetched the user transactions";
           state.error = String(action.payload);
         }
       )

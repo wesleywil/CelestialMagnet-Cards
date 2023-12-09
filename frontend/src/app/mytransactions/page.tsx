@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "@/redux/store";
-import { fetchTransactions } from "@/redux/transactions/transactions";
+import { fetchUserTransactions } from "@/redux/transactions/transactions";
 import { retrieveUser } from "@/redux/user/user";
 
 // Components
@@ -22,7 +22,7 @@ export default function MyTransactions() {
   useEffect(() => {
     console.log("Transactions!, ", userStatus);
     if (status === "idle") {
-      dispatch(fetchTransactions());
+      dispatch(fetchUserTransactions());
     }
     if (userStatus === "idle") {
       dispatch(retrieveUser());
