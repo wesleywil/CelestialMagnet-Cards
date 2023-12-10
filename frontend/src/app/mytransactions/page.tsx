@@ -40,7 +40,7 @@ export default function MyTransactions() {
       <main className="p-24 flex min-h-screen flex-col items-center text-[#fcfcfa] z-0">
         <h1 className="text-3xl font-semibold ">My Transactions</h1>
         {transactions.length ? (
-          <div className="xl:w-11/12 mx-auto h-[70vh] p-2 grid md:grid-cols-3 xl:grid-cols-6 gap-4 overflow-y-auto">
+          <div className="xl:w-11/12 mx-auto h-[70vh] p-2 flex justify-center gap-4 overflow-y-auto">
             {transactions.map((item) => (
               <TransactionItem key={item.id} transaction={item} />
             ))}
