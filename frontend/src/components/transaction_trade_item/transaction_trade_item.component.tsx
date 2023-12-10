@@ -26,11 +26,11 @@ const TransactionTradeItem = ({
   const desired_card_frame = `http://localhost:8000${desiredCard.frame_image}`;
   const desired_card_img = `http://localhost:8000${desiredCard.base_image}`;
   return (
-    <div className="w-[28rem] h-[25rem] flex flex-col gap-4 text-[#262c35]">
+    <div className="w-[28rem] h-[27rem] flex flex-col justify-between gap-4 text-[#262c35]">
       <h1 className="w-fit mx-auto px-2 text-3xl font-bold bg-[#fcfcfa] uppercase rounded-full">
         {transaction.transaction_type}
       </h1>
-      <div className="w-full border rounded">
+      <div className="w-full h-[27rem] flex flex-col justify-between border rounded">
         <h2 className="w-full text-2xl bg-[#fcfcfa] text-center uppercase font-semibold ">
           {user.username}
         </h2>
