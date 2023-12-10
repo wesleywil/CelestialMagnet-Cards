@@ -49,8 +49,7 @@ export const fetchUserTransactions = createAsyncThunk(
 export const createTransaction = createAsyncThunk(
   "transactions/createTransaction",
   async (data: Transaction) => {
-    console.log("FETCH");
-    const res = await fetch(`${url}/transactions/`, {
+    const res = await fetch(`${url}/transactions/user/`, {
       method: "POST",
       headers: headers,
       credentials: "include",
@@ -67,6 +66,9 @@ export const transactionSlice = createSlice({
   reducers: {
     addTransaction: (state, action: PayloadAction<Transaction>) => {
       state.transaction = { ...action.payload };
+    },
+    resetStatus: (state) => {
+      state.status = "idle";
     },
   },
   extraReducers: (builder) => {
@@ -111,7 +113,7 @@ export const transactionSlice = createSlice({
       .addCase(
         createTransaction.fulfilled,
         (state, action: PayloadAction<any>) => {
-          state.status = `transaction created successfully, ${action.payload}`;
+          state.status = "transaction created successfully";
         }
       )
       .addCase(
@@ -124,6 +126,6 @@ export const transactionSlice = createSlice({
   },
 });
 
-export const { addTransaction } = transactionSlice.actions;
+export const { addTransaction, resetStatus } = transactionSlice.actions;
 
 export default transactionSlice.reducer;
