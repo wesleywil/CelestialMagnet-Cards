@@ -57,8 +57,14 @@ export default function SignUp() {
     >
       <div className="my-2 w-24 h-1 bg-[#7bc6a2]"></div>
       <div className="w-full xl:w-2/4 flex border rounded-xl overflow-hidden">
-        <div className="hidden w-1/2 md:w-full xl:w-1/2 h-[60vh] p-4 md:flex flex-col items-center justify-center bg-[#7bc6a2]">
-          <h1 className="flex flex-col text-[#262c35] text-6xl font-bold text-center">
+        <div
+          style={{
+            backgroundImage: `url("http://localhost:8000/images/card_bases/Tidal_Leviathan.jpg")`,
+            backgroundSize: "cover",
+          }}
+          className="hidden w-1/2 md:w-full xl:w-1/2 h-[60vh]  md:flex flex-col items-center justify-center bg-[#7bc6a2]"
+        >
+          <h1 className="w-full p-4 flex flex-col bg-[#7bc6a2]/80 text-[#262c35] text-6xl font-bold text-center">
             <span>Collect</span>
             <span>Trade</span>
             <span>Conquer!</span>
@@ -121,7 +127,7 @@ export default function SignUp() {
           ) : (
             ""
           )}
-          <button className="px-2 py-1 text-xl font-bold hover:text-[#262c35] bg-[#7bc6a2] hover:bg-[#fcfcfa] rounded transform duration-500 ease-in-out">
+          <button className="px-2 py-1 text-xl font-bold text-[#262c35] hover:text-[#262c35] bg-[#7bc6a2] hover:bg-[#fcfcfa] rounded transform duration-500 ease-in-out">
             Register
           </button>
         </form>

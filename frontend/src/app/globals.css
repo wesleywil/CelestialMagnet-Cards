@@ -19,10 +19,26 @@ body{
     100%{opacity: 100%;}
 }
 
+@keyframes card_effect{
+    0%{translate: 0% 0%;}
+    
+    100%{translate: 0% -10%;}
+}
+
 .card_shadow{
     box-shadow: -6px 10px 8px -8px rgba(0,0,0,0.4);
 }
 
 .card_shadow:hover{
     box-shadow: -7px 20px 8px -8px rgba(0,0,0,0.6);
+}
+
+.card_effect{
+    translate: 0% 0%;
+    box-shadow: -6px 10px 8px -8px rgba(0,0,0,0.4);
+}
+
+.card_effect:hover{
+    translate: 1.5% -1.5%;
+    box-shadow: -17px 15px 8px -8px rgba(0,0,0,0.6)
 }

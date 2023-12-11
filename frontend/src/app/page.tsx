@@ -1,3 +1,5 @@
+import HomeShowcase from "@/components/home_showcase/home_showcase.component";
+
 export default function Home() {
   return (
     <main
@@ -28,13 +30,14 @@ export default function Home() {
             Discover More
           </button>
         </div>
-        <div className="self-center">
+        {/* <div className="self-center">
           <img
             src="https://dummyimage.com/600x600"
             alt="something"
             className="md:w-2/3 xl:w-full md:mx-auto rounded-full p-2 border border-[#7bc6a2]"
           />
-        </div>
+        </div> */}
+        <HomeShowcase />
       </div>
     </main>
   );

@@ -37,8 +37,14 @@ export default function SignIn() {
     >
       <div className="my-2 w-24 h-1 bg-[#7bc6a2]"></div>
       <div className="w-full xl:w-2/4 flex border rounded-xl overflow-hidden">
-        <div className="hidden w-1/2 md:w-full xl:w-1/2 h-[60vh] p-4 md:flex flex-col items-center justify-center bg-[#7bc6a2]">
-          <h1 className="text-6xl text-[#262c35] font-bold text-center">
+        <div
+          style={{
+            backgroundImage: `url("http://localhost:8000/images/card_bases/Mermaid.jpg")`,
+            backgroundSize: "cover",
+          }}
+          className="hidden w-1/2 md:w-full xl:w-1/2 h-[60vh] md:flex flex-col items-center justify-center bg-[#7bc6a2]"
+        >
+          <h1 className="px-4 text-6xl bg-[#7bc6a2]/80 text-[#262c35] font-bold text-center">
             Welcome Back!
           </h1>
         </div>
@@ -79,7 +85,7 @@ export default function SignIn() {
           ) : (
             ""
           )}
-          <button className="px-2 py-1 text-xl font-bold hover:text-[#262c35] bg-[#7bc6a2] hover:bg-[#fcfcfa] rounded transform duration-500 ease-in-out">
+          <button className="px-2 py-1 text-xl font-bold text-[#262c35] hover:text-[#262c35] bg-[#7bc6a2] hover:bg-[#fcfcfa] rounded transform duration-500 ease-in-out">
             Login
           </button>
         </form>
