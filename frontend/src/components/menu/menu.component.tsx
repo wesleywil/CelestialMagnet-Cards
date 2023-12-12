@@ -1,10 +1,18 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { FaBars } from "react-icons/fa";
+import type { AppDispatch, RootState } from "@/redux/store";
+import { signOut } from "@/redux/user/user";
+
 const Menu = () => {
   const [showMenu, setShowMenu] = useState(false);
+  const userStatus = useSelector((state: RootState) => state.user.status);
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {}, [userStatus]);
 
   return (
     <div className="absolute w-full flex flex-col justify-center z-50">
@@ -43,26 +51,43 @@ const Menu = () => {
             Transactions
           </Link>
         </div>
-        <div className="w-full mt-4 pt-2 flex flex-col items-center gap-2 font-bold text-[#7bc6a2] text-2xl border-t border-[#fcfcfa]">
-          <Link
-            href="/mycards"
-            className="px-2 py-1 hover:text-[#fcfcfa] transform duration-500 ease-in"
-          >
-            My Cards
-          </Link>
-          <Link
-            href="/mytransactions"
-            className="px-2 py-1 text-2xl hover:text-[#fcfcfa] transform duration-500 ease-in"
-          >
-            My Transactions
-          </Link>
-          <Link
-            href="/"
-            className="mt-4 px-2 py-1 text-xl text-[#fcfcfa] hover:text-[#7bc6a2] bg-[#7bc6a2] hover:bg-[#fcfcfa] rounded transform duration-500 ease-in"
-          >
-            Sign Out
-          </Link>
-        </div>
+        {userStatus === "user info failed to be retrieved" ? (
+          <div className="w-full h-full border mt-4 pt-2 flex justify-center items-center gap-2 font-bold text-[#7bc6a2] text-2xl border-t border-[#fcfcfa]">
+            <Link
+              href="/"
+              className="mt-4 px-2 py-1 text-xl text-[#fcfcfa] hover:text-[#262c35] bg-[#7bc6a2] hover:bg-[#fcfcfa] rounded transform duration-500 ease-in"
+            >
+              Sign In
+            </Link>
+            <Link
+              href="/"
+              className="mt-4 px-2 py-1 text-xl text-[#fcfcfa] hover:text-[#262c35] bg-[#7bc6a2] hover:bg-[#fcfcfa] rounded transform duration-500 ease-in"
+            >
+              Sign Up
+            </Link>
+          </div>
+        ) : (
+          <div className="w-full mt-4 pt-2 flex flex-col items-center gap-2 font-bold text-[#7bc6a2] text-2xl border-t border-[#fcfcfa]">
+            <Link
+              href="/mycards"
+              className="px-2 py-1 hover:text-[#fcfcfa] transform duration-500 ease-in"
+            >
+              My Cards
+            </Link>
+            <Link
+              href="/mytransactions"
+              className="px-2 py-1 text-2xl hover:text-[#fcfcfa] transform duration-500 ease-in"
+            >
+              My Transactions
+            </Link>
+            <button
+              onClick={() => dispatch(signOut())}
+              className="mt-4 px-2 py-1 text-xl text-[#fcfcfa] hover:text-[#7bc6a2] bg-[#7bc6a2] hover:bg-[#262c35] rounded transform duration-500 ease-in"
+            >
+              Sign Out
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

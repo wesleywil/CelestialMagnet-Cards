@@ -62,7 +62,7 @@ export const signUp = createAsyncThunk(
     password: string;
     confirmPassword: string;
   }) => {
-    const res = await fetch(`${url}register/`, {
+    const res = await fetch(`${url}/register/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -75,13 +75,17 @@ export const signUp = createAsyncThunk(
 );
 
 export const signOut = createAsyncThunk("user/signOut", async () => {
-  const res = await fetch(`${url}logout/`, {
-    headers: {
-      "Content-Type": "application/json",
-    },
+  const res = await fetch(`${url}/logout/`, {
+    method: "POST",
+    headers: headers,
+    credentials: "include",
   });
-  const data = await res.json();
-  return data;
+  if (!res.ok) {
+    throw new Error("Failed to fetch user info");
+  }
+
+  localStorage.removeItem("token");
+  return "Successfully logged out!";
 });
 
 export const userSlice = createSlice({
@@ -125,7 +129,7 @@ export const userSlice = createSlice({
         state.status = "trying to signOut";
       })
       .addCase(signOut.fulfilled, (state) => {
-        state.status = "user was logged out";
+        state.status = "idle";
       })
       .addCase(signOut.rejected, (state, { payload }) => {
         state.status = "failed to logged Out user";
