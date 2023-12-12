@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "@/redux/store";
 import { useEffect } from "react";
 import { fetchUserCards, selectCardById } from "@/redux/user_cards/user_cards";
-import { retrieveUser } from "@/redux/user/user";
 import { switchCardShowcase } from "@/redux/utils/utils";
 
 // Components
@@ -33,10 +32,6 @@ export default function MyCards() {
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    console.log("STATUS INFO ==> ", userStatus);
-    if (userStatus === "idle") {
-      dispatch(retrieveUser());
-    }
     if (status === "idle") {
       dispatch(fetchUserCards());
     }
@@ -47,7 +42,7 @@ export default function MyCards() {
     dispatch(switchCardShowcase());
   };
 
-  if (status === "idle" || userStatus === "trying to retrieve user info") {
+  if (status === "idle") {
     return <Loading />;
   }
   if (userStatus === "user info failed to be retrieved") {

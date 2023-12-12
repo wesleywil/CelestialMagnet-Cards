@@ -4,12 +4,11 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "@/redux/store";
 import { fetchUserTransactions } from "@/redux/transactions/transactions";
-import { retrieveUser } from "@/redux/user/user";
 
 // Components
 import TransactionItem from "@/components/transaction_item/transaction_item.component";
-import Loading from "@/components/loading/loading.component";
 import NotAuthenticated from "@/components/not_authenticated/not_authenticated.component";
+import Loading from "@/components/loading/loading.component";
 
 export default function MyTransactions() {
   const transactions = useSelector(
@@ -20,19 +19,13 @@ export default function MyTransactions() {
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    console.log("Transactions!, ", userStatus);
     if (status === "idle") {
       dispatch(fetchUserTransactions());
     }
-    if (userStatus === "idle") {
-      dispatch(retrieveUser());
-    }
   }, [status]);
-
-  if (status === "idle" || userStatus === "trying to retrieve user info") {
+  if (status === "idle") {
     return <Loading />;
   }
-
   if (userStatus === "user info failed to be retrieved") {
     return <NotAuthenticated />;
   } else {
