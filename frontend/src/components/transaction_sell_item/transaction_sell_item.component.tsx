@@ -1,6 +1,12 @@
+import { usePathname } from "next/navigation";
 import { Card, Transaction, User } from "@/utils/interfaces";
 
+// Components
+import RemoveListing from "../remove_listing/remove_listing.component";
+
 const TransactionSellItem = ({ transaction }: { transaction: Transaction }) => {
+  const pathName = usePathname();
+
   let ownerCard: Card = {} as Card;
 
   let user: User = {} as User;
@@ -20,9 +26,17 @@ const TransactionSellItem = ({ transaction }: { transaction: Transaction }) => {
         {transaction.transaction_type}
       </h1>
       <div className="w-full h-[27rem] flex flex-col justify-between border rounded">
-        <h2 className="w-full text-2xl bg-[#fcfcfa] text-center uppercase font-semibold ">
-          {user.username}
-        </h2>
+        {pathName === "/mytransactions" ? (
+          <RemoveListing
+            user={user}
+            message="Remove card from the selling listing?"
+          />
+        ) : (
+          <h2 className="w-full text-2xl bg-[#fcfcfa] text-center uppercase font-semibold ">
+            {user.username}
+          </h2>
+        )}
+
         <div className="mt-2 py-2 flex justify-center text-[#fcfcfa] text-xl ">
           <div className="flex flex-col gap-2">
             <h1 className="text-center">{ownerCard.name}</h1>

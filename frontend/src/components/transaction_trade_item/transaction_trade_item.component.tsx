@@ -1,11 +1,17 @@
 import { Card, Transaction, User } from "@/utils/interfaces";
+import { usePathname } from "next/navigation";
 import { FaArrowRight } from "react-icons/fa";
+
+// Components
+import RemoveListing from "../remove_listing/remove_listing.component";
 
 const TransactionTradeItem = ({
   transaction,
 }: {
   transaction: Transaction;
 }) => {
+  const pathName = usePathname();
+
   let ownerCard: Card = {} as Card;
   let desiredCard: Card = {} as Card;
   let user: User = {} as User;
@@ -31,9 +37,16 @@ const TransactionTradeItem = ({
         {transaction.transaction_type}
       </h1>
       <div className="w-full h-[27rem] flex flex-col justify-between border rounded">
-        <h2 className="w-full text-2xl bg-[#fcfcfa] text-center uppercase font-semibold ">
-          {user.username}
-        </h2>
+        {pathName === "/mytransactions" ? (
+          <RemoveListing
+            user={user}
+            message="Remove card from the trading listing?"
+          />
+        ) : (
+          <h2 className="w-full text-2xl bg-[#fcfcfa] text-center uppercase font-semibold ">
+            {user.username}
+          </h2>
+        )}
         <div className="p-2 flex gap-2 justify-center text-[#fcfcfa]">
           {/* Owner Card */}
           <div className="flex flex-col gap-2">
