@@ -12,7 +12,7 @@ const Card = ({ card, action }: CardProps) => {
     owner = card.owner;
   }
   return (
-    <div onClick={() => action(card.name)}>
+    <div onClick={() => action(card.name)} className="h-fit w-fit">
       <h2 className="mr-10 text-base text-center uppercase">{card.name}</h2>
       <div className="relative w-52 h-64 mt-2 hover:mt-0  overflow-hidden transform duration-700 ease-in-out card_shadow">
         {/* Frame Image */}
