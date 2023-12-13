@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
-import { FaBars } from "react-icons/fa";
+import { FaBars, FaHome } from "react-icons/fa";
 import type { AppDispatch, RootState } from "@/redux/store";
 import { signOut } from "@/redux/user/user";
 
@@ -28,14 +28,15 @@ const Menu = () => {
             ? { height: "27rem", border: "1px solid #7bc6a2" }
             : { height: "0" }
         }
-        className="w-1/2 mx-auto flex flex-col items-center gap-2 bg-[#262c35] rounded overflow-hidden shadow-sm transform duration-700 ease-in-out"
+        className="xl:w-1/4 md:w-1/3 mx-auto flex flex-col items-center gap-2 bg-[#262c35] rounded overflow-hidden shadow-sm transform duration-700 ease-in-out"
       >
-        <Link href="/">
-          <img
-            src="http://localhost:8000/images/card_bases/Tidal_Leviathan.jpg"
-            alt="logo"
-            className="rounded-full w-24 h-24 mt-8 p-2 border border-[#fcfcfa] hover:border-[#7bc6a2] transform duration-500 ease-in-out"
-          />
+        <Link
+          href="/"
+          className="mt-8 p-2 relative flex items-center justify-center border border-[#fcfcfa] hover:border-[#7bc6a2] rounded-full shadow-xl transform duration-500 ease-in-out"
+        >
+          <h1 className="text-5xl text-[#fcfcfa] hover:text-[#7bc6a2] transform duration-500 ease-in-out">
+            <FaHome />
+          </h1>
         </Link>
         <div className="w-full flex flex-col items-center gap-2 font-bold text-[#7bc6a2]  text-2xl">
           <Link
