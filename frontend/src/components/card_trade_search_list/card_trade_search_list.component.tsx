@@ -4,7 +4,7 @@ import type { AppDispatch, RootState } from "@/redux/store";
 import { selectCardById } from "@/redux/cards/cards";
 
 const CardTradeSearchList = () => {
-  const cards = useSelector((state: RootState) => state.cards.filtered_cards);
+  const cards = useSelector((state: RootState) => state.cards.filteredByName);
   const dispatch = useDispatch<AppDispatch>();
 
   return (

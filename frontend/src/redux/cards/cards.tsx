@@ -3,19 +3,21 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 export interface CardState {
-  card: Card;
-  cards: Card[];
-  group_cards: Card[];
-  filtered_cards: Card[];
+  selectedCard: Card;
+  allCards: Card[];
+  groupedCards: Card[];
+  filteredByType: Card[];
+  filteredByName: Card[];
   status: string;
   error: string;
 }
 
 const initialState: CardState = {
-  card: {} as Card,
-  cards: [],
-  group_cards: [],
-  filtered_cards: [],
+  selectedCard: {} as Card,
+  allCards: [],
+  groupedCards: [],
+  filteredByType: [],
+  filteredByName: [],
   status: "idle",
   error: "",
 };
@@ -48,43 +50,44 @@ export const cardSlice = createSlice({
   initialState,
   reducers: {
     selectGroupCards: (state, action: PayloadAction<string>) => {
-      const selectedCards = state.cards.filter(
+      const selectedCards = state.allCards.filter(
         (item) => item.name === action.payload
       );
-      state.group_cards = selectedCards !== undefined ? selectedCards : [];
+      state.groupedCards = selectedCards !== undefined ? selectedCards : [];
     },
     selectCard: (state, action: PayloadAction<string>) => {
-      const selectedCard = state.group_cards.find(
+      const selectedCard = state.groupedCards.find(
         (item) => item.tier === action.payload
       );
-      state.card =
-        selectedCard !== undefined ? selectedCard : state.group_cards[0];
+      state.selectedCard =
+        selectedCard !== undefined ? selectedCard : state.groupedCards[0];
     },
     selectCardById: (state, action: PayloadAction<number>) => {
-      const selectedCard = state.filtered_cards.find(
+      const selectedCard = state.filteredByType.find(
         (item) => item.id === action.payload
       );
-      state.card = selectedCard !== undefined ? selectedCard : ({} as Card);
+      state.selectedCard =
+        selectedCard !== undefined ? selectedCard : ({} as Card);
     },
     resetCard: (state) => {
-      state.card = {} as Card;
+      state.selectedCard = {} as Card;
     },
     resetGroupCards: (state) => {
-      state.group_cards = [];
-      state.card = {} as Card;
+      state.groupedCards = [];
+      state.selectedCard = {} as Card;
     },
     filterByCardType: (state, action: PayloadAction<string>) => {
-      const filteredCards = state.cards.filter((item) => {
+      const filteredCards = state.allCards.filter((item) => {
         if (typeof item.card_type !== "number") {
           return item.card_type.title === action.payload;
         } else {
           return true;
         }
       });
-      state.filtered_cards = filteredCards;
+      state.filteredByType = filteredCards;
     },
     resetFilter: (state) => {
-      state.filtered_cards = state.cards;
+      state.filteredByType = state.allCards;
     },
   },
   extraReducers: (builder) => {
@@ -96,8 +99,8 @@ export const cardSlice = createSlice({
         fetchCards.fulfilled,
         (state, action: PayloadAction<Card[] | []>) => {
           state.status = "cards retrieved successfully";
-          state.cards = action.payload;
-          state.filtered_cards = action.payload;
+          state.allCards = action.payload;
+          state.filteredByType = action.payload;
         }
       )
       .addCase(fetchCards.rejected, (state, action: PayloadAction<any>) => {
@@ -111,7 +114,7 @@ export const cardSlice = createSlice({
         fetchCardsByName.fulfilled,
         (state, action: PayloadAction<Card[] | []>) => {
           state.status = "cards by name retrieved successfully";
-          state.filtered_cards = action.payload;
+          state.filteredByName = action.payload;
         }
       )
       .addCase(

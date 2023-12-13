@@ -13,7 +13,9 @@ import CardShowcaseImage from "../card_showcase_image/card_showcase_image.compon
 
 const CardSell = () => {
   const [message, setMessage] = useState("");
-  const card = useSelector((state: RootState) => state.usercards.card);
+  const card = useSelector(
+    (state: RootState) => state.usercards.userSelectedCard
+  );
   const user = useSelector((state: RootState) => state.user.user);
   const status = useSelector((state: RootState) => state.transactions.status);
   const dispatch = useDispatch<AppDispatch>();

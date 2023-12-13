@@ -26,9 +26,11 @@ export default function MyCards() {
   const status = useSelector((state: RootState) => state.usercards.status);
   const userStatus = useSelector((state: RootState) => state.user.status);
   const cards = useSelector(
-    (state: RootState) => state.usercards.filtered_cards
+    (state: RootState) => state.usercards.userFilteredCards
   );
-  const card = useSelector((state: RootState) => state.usercards.card);
+  const card = useSelector(
+    (state: RootState) => state.usercards.userSelectedCard
+  );
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {

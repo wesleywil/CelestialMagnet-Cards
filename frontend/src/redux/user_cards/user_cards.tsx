@@ -4,17 +4,17 @@ import { headers } from "../user/user";
 import { Card } from "@/utils/interfaces";
 
 export interface UserCardState {
-  card: Card;
-  cards: Card[];
-  filtered_cards: Card[];
+  userSelectedCard: Card;
+  userAllCards: Card[];
+  userFilteredCards: Card[];
   status: string;
   error: string;
 }
 
 const initialState: UserCardState = {
-  card: {} as Card,
-  cards: [],
-  filtered_cards: [],
+  userSelectedCard: {} as Card,
+  userAllCards: [],
+  userFilteredCards: [],
   status: "idle",
   error: "",
 };
@@ -42,10 +42,11 @@ export const userCardSlice = createSlice({
   initialState,
   reducers: {
     selectCardById: (state, action: PayloadAction<number>) => {
-      const selectedCard = state.cards.find(
+      const selectedCard = state.userAllCards.find(
         (item) => item.id === action.payload
       );
-      state.card = selectedCard !== undefined ? selectedCard : ({} as Card);
+      state.userSelectedCard =
+        selectedCard !== undefined ? selectedCard : ({} as Card);
     },
   },
   extraReducers: (builder) => {
@@ -57,8 +58,8 @@ export const userCardSlice = createSlice({
         fetchUserCards.fulfilled,
         (state, action: PayloadAction<Card[] | []>) => {
           state.status = "user cards retrieved successfully";
-          state.cards = action.payload;
-          state.filtered_cards = action.payload;
+          state.userAllCards = action.payload;
+          state.userFilteredCards = action.payload;
         }
       )
       .addCase(fetchUserCards.rejected, (state, action: PayloadAction<any>) => {

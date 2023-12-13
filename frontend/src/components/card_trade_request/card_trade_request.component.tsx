@@ -8,7 +8,9 @@ import CardShowcaseImage from "../card_showcase_image/card_showcase_image.compon
 import CardTradeSearchList from "../card_trade_search_list/card_trade_search_list.component";
 
 const CardTradeRequest = () => {
-  const card_selected = useSelector((state: RootState) => state.cards.card);
+  const card_selected = useSelector(
+    (state: RootState) => state.cards.selectedCard
+  );
   const dispatch = useDispatch<AppDispatch>();
   if (Object.keys(card_selected).length !== 0) {
     return (

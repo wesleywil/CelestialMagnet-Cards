@@ -12,8 +12,12 @@ import CardTradeRequest from "../card_trade_request/card_trade_request.component
 
 const CardTrade = () => {
   const [search, setSearch] = useState("");
-  const card = useSelector((state: RootState) => state.usercards.card);
-  const card_selected = useSelector((state: RootState) => state.cards.card);
+  const card = useSelector(
+    (state: RootState) => state.usercards.userSelectedCard
+  );
+  const card_selected = useSelector(
+    (state: RootState) => state.cards.selectedCard
+  );
   const user = useSelector((state: RootState) => state.user.user);
   const statusTransaction = useSelector(
     (state: RootState) => state.transactions.status

@@ -20,9 +20,11 @@ export default function Cards() {
     (state: RootState) => state.utils.hideCardShowcase
   );
   const status = useSelector((state: RootState) => state.cards.status);
-  const cards = useSelector((state: RootState) => state.cards.filtered_cards);
-  const groupCards = useSelector((state: RootState) => state.cards.group_cards);
-  const card = useSelector((state: RootState) => state.cards.card);
+  const cards = useSelector((state: RootState) => state.cards.filteredByType);
+  const groupCards = useSelector(
+    (state: RootState) => state.cards.groupedCards
+  );
+  const card = useSelector((state: RootState) => state.cards.selectedCard);
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
