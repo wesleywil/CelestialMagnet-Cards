@@ -15,7 +15,7 @@ const CardShowcase = ({ children }: { children?: React.ReactNode }) => {
   };
   return (
     <div
-      className="absolute min-h-screen min-w-full flex flex-col items-center bg-[#262c35]/70 z-30"
+      className="absolute min-h-screen min-w-full flex flex-col items-center backdrop-blur-sm	 z-30"
       id="close_panel"
       onClick={handleClick}
     >

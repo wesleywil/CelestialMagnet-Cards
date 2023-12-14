@@ -58,7 +58,7 @@ export default function MyCards() {
           ""
         ) : (
           <CardShowcase>
-            <div className="md:w-[70vw] xl:w-[40vw] h-[60vh] mt-36 p-4 flex xl:justify-center bg-black/80 rounded">
+            <div className="md:w-[70vw] xl:w-[40vw] h-[60vh] mt-36 p-4 flex xl:justify-center bg-[#e6eeee]/70 backdrop-blur-sm	 rounded">
               {/* Card Image and Tier Switch Buttons */}
 
               <div className="self-center ">
@@ -75,7 +75,7 @@ export default function MyCards() {
           </CardShowcase>
         )}
 
-        <main className="p-24 flex min-h-screen flex-col items-center text-[#fcfcfa] z-0">
+        <main className="p-24 flex min-h-screen flex-col items-center text-[#e6eeee] z-0">
           <h1 className="text-3xl font-semibold ">My Cards</h1>
           <div className="xl:w-11/12 mx-auto h-[70vh] p-2 grid md:grid-cols-3 xl:grid-cols-6 gap-4 overflow-y-auto">
             {cards.length

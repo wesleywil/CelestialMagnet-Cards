@@ -53,18 +53,18 @@ export default function SignUp() {
   return (
     <main
       className="p-2 py-24 md:p-24 flex min-h-screen flex-col items-center 
-      text-[#fcfcfa] z-0"
+      text-[#e6eeee] z-0"
     >
-      <div className="my-2 w-24 h-1 bg-[#7bc6a2]"></div>
+      <div className="my-2 w-24 h-1 bg-[#e05f5f]"></div>
       <div className="w-full xl:w-2/4 flex border rounded-xl overflow-hidden">
         <div
           style={{
             backgroundImage: `url("http://localhost:8000/images/card_bases/Tidal_Leviathan.jpg")`,
             backgroundSize: "cover",
           }}
-          className="hidden w-1/2 md:w-full xl:w-1/2 h-[60vh]  md:flex flex-col items-center justify-center bg-[#7bc6a2]"
+          className="hidden w-1/2 md:w-full xl:w-1/2 h-[60vh]  md:flex flex-col items-center justify-center bg-[#e05f5f]"
         >
-          <h1 className="w-full p-4 flex flex-col bg-[#7bc6a2]/80 text-[#262c35] text-6xl font-bold text-center">
+          <h1 className="w-full p-4 flex flex-col bg-[#e05f5f]/70 backdrop-blur-sm text-[#1e2027] text-6xl font-bold text-center">
             <span>Collect</span>
             <span>Trade</span>
             <span>Conquer!</span>
@@ -87,7 +87,7 @@ export default function SignUp() {
               onChange={(e) =>
                 setFormData({ ...formData, username: e.target.value })
               }
-              className="px-2 py-1 bg-transparent text-center md:text-left border-b-2 border-[#fcfcfa] focus:border-[#7bc6a2] outline-0 transform duration-500 ease-in"
+              className="px-2 py-1 bg-transparent text-center md:text-left border-b-2 border-[#e6eeee] focus:border-[#e05f5f] outline-0 transform duration-500 ease-in"
             />
             <input
               type="email"
@@ -97,7 +97,7 @@ export default function SignUp() {
               onChange={(e) =>
                 setFormData({ ...formData, email: e.target.value })
               }
-              className="px-2 py-1 bg-transparent text-center md:text-left border-b-2 border-[#fcfcfa] focus:border-[#7bc6a2] outline-0 transform duration-500 ease-in"
+              className="px-2 py-1 bg-transparent text-center md:text-left border-b-2 border-[#e6eeee] focus:border-[#e05f5f] outline-0 transform duration-500 ease-in"
             />
             <input
               type="password"
@@ -107,7 +107,7 @@ export default function SignUp() {
               onChange={(e) =>
                 setFormData({ ...formData, password: e.target.value })
               }
-              className="px-2 py-1 bg-transparent text-center md:text-left border-b-2 border-[#fcfcfa] focus:border-[#7bc6a2] outline-0 transform duration-500 ease-in"
+              className="px-2 py-1 bg-transparent text-center md:text-left border-b-2 border-[#e6eeee] focus:border-[#e05f5f] outline-0 transform duration-500 ease-in"
             />
             <input
               type="password"
@@ -117,22 +117,22 @@ export default function SignUp() {
               onChange={(e) =>
                 setFormData({ ...formData, confirmPassword: e.target.value })
               }
-              className="px-2 py-1 bg-transparent text-center md:text-left border-b-2 border-[#fcfcfa] focus:border-[#7bc6a2] outline-0 transform duration-500 ease-in"
+              className="px-2 py-1 bg-transparent text-center md:text-left border-b-2 border-[#e6eeee] focus:border-[#e05f5f] outline-0 transform duration-500 ease-in"
             />
           </div>
           {message.length ? (
-            <h2 className="w-full mb-2 text-[#7bc6a2] text-sm text-center rounded">
+            <h2 className="w-full mb-2 text-[#e05f5f] text-sm text-center rounded">
               {message}
             </h2>
           ) : (
             ""
           )}
-          <button className="px-2 py-1 text-xl font-bold text-[#262c35] hover:text-[#262c35] bg-[#7bc6a2] hover:bg-[#fcfcfa] rounded transform duration-500 ease-in-out">
+          <button className="px-2 py-2 text-2xl font-bold text-[#1e2027] hover:text-[#1e2027] bg-[#e05f5f] hover:bg-[#e6eeee] rounded transform duration-500 ease-in-out">
             Register
           </button>
         </form>
       </div>
-      <div className="my-2 w-24 h-1 bg-[#7bc6a2]"></div>
+      <div className="my-2 w-24 h-1 bg-[#e05f5f]"></div>
     </main>
   );
 }

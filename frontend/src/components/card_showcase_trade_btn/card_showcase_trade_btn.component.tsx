@@ -15,7 +15,7 @@ const CardShowcaseTradeBtn = ({ cardId }: { cardId: number }) => {
     <div>
       <button
         onClick={handleSellTrade}
-        className="w-full p-2 flex gap-2 justify-center items-center font-bold text-[#262c35] bg-[#fcfcfa] hover:bg-[#7bc6a2] rounded transform duration-500 ease-in-out"
+        className="w-full p-2 flex gap-2 justify-center items-center font-bold text-[#e6eeee] bg-[#1e2027] hover:bg-[#e05f5f] border border-[#e05f5f] hover:border-[#1e2027] rounded transform duration-500 ease-in-out"
       >
         Sell <FaArrowsAltH /> Trade
       </button>

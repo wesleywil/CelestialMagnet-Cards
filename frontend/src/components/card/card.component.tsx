@@ -13,7 +13,7 @@ const Card = ({ card, action }: CardProps) => {
   }
   return (
     <div onClick={() => action(card.name)} className="h-fit w-fit">
-      <h2 className="mr-10 text-base text-center uppercase">{card.name}</h2>
+      <h2 className="text-base text-center uppercase">{card.name}</h2>
       <div className="relative w-52 h-64 mt-2 hover:mt-0  overflow-hidden transform duration-700 ease-in-out card_shadow">
         {/* Frame Image */}
         <div
@@ -33,7 +33,7 @@ const Card = ({ card, action }: CardProps) => {
         ></div>
       </div>
 
-      <h3 className="text-xs text-[#7bc6a2]">
+      <h3 className="text-sm text-[#e05f5f]">
         {card.owner ? `Owned by: ${owner?.username}` : "No ownership"}
       </h3>
     </div>

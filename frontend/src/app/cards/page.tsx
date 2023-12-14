@@ -73,7 +73,7 @@ export default function Cards() {
       )}
       <main
         className="p-24 flex min-h-screen flex-col items-center 
-      text-[#fcfcfa] z-0"
+      text-[#e6eeee] z-0"
       >
         <h1 className="text-3xl font-semibold ">Celestial Magnet Cards</h1>
         <CardTypeFilter />

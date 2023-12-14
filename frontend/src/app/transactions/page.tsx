@@ -26,7 +26,7 @@ export default function Transactions() {
     return <Loading />;
   }
   return (
-    <main className="p-24 flex min-h-screen flex-col items-center text-[#fcfcfa] z-0">
+    <main className="p-24 flex min-h-screen flex-col items-center text-[#e6eeee] z-0">
       <h1 className="text-3xl font-semibold ">Transactions</h1>
       {transactions.length ? (
         <div className="xl:w-11/12 mx-auto h-[70vh] p-2 flex flex-wrap justify-center gap-4 overflow-y-auto">

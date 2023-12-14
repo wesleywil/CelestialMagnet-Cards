@@ -18,7 +18,7 @@ const Loading = () => {
     return () => clearInterval(interval);
   }, [images.length]);
   return (
-    <main className="p-24 flex min-h-screen flex-col items-center justify-center text-[#fcfcfa] z-0">
+    <main className="p-24 flex min-h-screen flex-col items-center justify-center text-[#e6eeee] z-0">
       <div className="flex flex-col gap-4 items-center">
         <img
           src={images[currentImageIndex]}

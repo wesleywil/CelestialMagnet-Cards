@@ -1,11 +1,13 @@
 import Menu from "@/components/menu/menu.component";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Barlow_Condensed } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./provider";
 import { UserAuth } from "./user_auth";
 
 const inter = Inter({ subsets: ["latin"] });
+const barlow_condensed = Barlow_Condensed({weight:"500", subsets:["latin"]})
+
 
 export const metadata: Metadata = {
   title: "Celestial Magnet Cards",
@@ -19,7 +21,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`overflow-hidden ${inter.className}`}>
+      <body className={`overflow-hidden ${barlow_condensed.className}`}>
         <Providers>
           <UserAuth>
             <Menu />

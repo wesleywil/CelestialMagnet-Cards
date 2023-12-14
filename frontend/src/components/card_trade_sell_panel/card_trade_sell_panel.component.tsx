@@ -28,9 +28,9 @@ const CardTradeSellPanel = () => {
     <div
       id="close_panel"
       onClick={handleClick}
-      className="absolute min-h-screen min-w-full flex flex-col items-center justify-center bg-[#262c35]/90 z-40"
+      className="absolute min-h-screen min-w-full flex flex-col items-center justify-center bg-[#1e2027]/70 backdrop-blur-sm z-40"
     >
-      <div className="p-2 flex gap-2 self-center justify-center text-3xl font-bold text-[#262c35] bg-[#7bc6a2]/80 rounded">
+      <div className="p-2 flex gap-2 self-center justify-center text-3xl font-bold text-[#1e2027] bg-[#e05f5f]/80 rounded">
         <h1>Sell</h1>
         <input
           onChange={(e) => setTrade(e.target.checked)}

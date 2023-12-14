@@ -42,8 +42,8 @@ const CardTrade = () => {
     console.log("Transaction Status ==> ", statusTransaction);
   }, [statusTransaction]);
   return (
-    <div className="w-11/12 md:w-[60vw] h-[70vh] mt-8 p-2 flex flex-col justify-between gap-2 text-[#7bc6a2] border rounded">
-      <h1 className="text-3xl font-bold text-[#fcfcfa] text-center border-b">
+    <div className="xl:w-1/2  md:w-3/4 h-[42rem] mt-8 p-2 flex flex-col justify-between gap-2 text-[#e05f5f] border border-[#e05f5f] rounded-xl">
+      <h1 className="text-4xl font-bold text-[#e6eeee] text-center border-b border-[#e05f5f]">
         TRADE
       </h1>
       <div className="flex gap-2 justify-center">
@@ -69,7 +69,7 @@ const CardTrade = () => {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search Card"
-                className="w-full px-2 py-1 text-center text-[#fcfcfa] bg-transparent outline-0 border-0 border-b-2 border-[#fcfcfa] focus:border-[#7bc6a2]"
+                className="w-full px-2 py-1 text-center text-[#e6eeee] bg-transparent outline-0 border-0 border-b-2 border-[#e6eeee] focus:border-[#e05f5f]"
               />
               <button onClick={handleSearchCard} className="-ml-8">
                 <FaSearch />
@@ -84,7 +84,7 @@ const CardTrade = () => {
       {/* Action */}
       <button
         onClick={handleTradeRequest}
-        className="px-2 py-1 font-bold text-3xl text-[#262c35] bg-[#7bc6a2] hover:bg-[#fcfcfa] rounded transform duration-700 ease-in-out"
+        className="px-2 py-1 font-bold text-3xl text-[#1e2027] bg-[#e05f5f] hover:bg-[#e6eeee] rounded transform duration-700 ease-in-out"
       >
         Create Trade Offer
       </button>

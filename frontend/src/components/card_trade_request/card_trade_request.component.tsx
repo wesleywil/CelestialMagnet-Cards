@@ -18,7 +18,7 @@ const CardTradeRequest = () => {
         <div className="w-full py-1 px-1 flex justify-end text-base">
           <button
             onClick={() => dispatch(resetCard())}
-            className="p-1 hover:text-[#262c35] bg-[#fcfcfa] hover:bg-[#7bc6a2] rounded-full transform duration-500 ease-in-out"
+            className="p-1 hover:text-[#1e2027] bg-[#e6eeee] hover:bg-[#e05f5f] rounded-full transform duration-500 ease-in-out"
           >
             <FaTimes />
           </button>

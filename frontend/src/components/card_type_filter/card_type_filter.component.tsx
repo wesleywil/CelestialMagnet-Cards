@@ -8,7 +8,7 @@ const CardTypeFilter = () => {
     <div className="xl:w-11/12 mt-12 flex gap-2">
       <button
         onClick={() => dispatch(resetFilter())}
-        className="px-2 py-1 font-bold text-[#fcfcfa] hover:text-[#7bc6a2] border border-[#fcfcfa] hover:border-[#7bc6a2] rounded transform duration-500 ease-in-out"
+        className="px-2 py-1 font-bold text-[#e6eeee] hover:text-[#e05f5f] border border-[#e6eeee] hover:border-[#e05f5f] rounded transform duration-500 ease-in-out"
       >
         All
       </button>

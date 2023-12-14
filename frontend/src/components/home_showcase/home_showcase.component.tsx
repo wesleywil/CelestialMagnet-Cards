@@ -28,7 +28,7 @@ const HomeShowcase = () => {
     <div className="self-center">
       <div className="relative w-[24.2rem] h-[30rem] card_effect transform duration-500 ease-in-out">
         {/* Name */}
-        <h1 className="absolute w-full py-1 text-center font-bold text-3xl  text-[#fcfcfa] bg-[#262c35]/80 top-6 left-0 z-10">
+        <h1 className="absolute w-full py-1 text-center font-bold text-3xl  text-[#e6eeee] bg-[#1e2027]/80 top-6 left-0 z-10">
           {names[currentImageIndex]}
         </h1>
         {/* Frame */}

@@ -8,19 +8,19 @@ const CardTradeSearchList = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   return (
-    <div className="w-72 h-[22.5rem] mt-2 flex flex-col items-center text-center text-[#fcfcfa] border">
+    <div className="w-72 h-[22.5rem] mt-2 flex flex-col items-center text-center text-[#e6eeee] border">
       <h1 className="w-full mb-2 text-xl border-b">Cards</h1>
 
       {cards.length ? (
         <div className="w-72 flex flex-col gap-2 text-sm">
           {cards.map((item) => (
-            <div className="w-full flex justify-between  bg-[#262c35] border">
+            <div className="w-full flex justify-between  bg-[#1e2027] border">
               <h1 className="py-1 px-2">
                 {item.name} - {item.tier}
               </h1>
               <button
                 onClick={() => dispatch(selectCardById(item.id!))}
-                className="px-2 text-[#262c35] bg-[#fcfcfa] hover:bg-[#7bc6a2] transform duration-500 ease-in-out"
+                className="px-2 text-[#1e2027] bg-[#e6eeee] hover:bg-[#e05f5f] transform duration-500 ease-in-out"
               >
                 <FaPlus />
               </button>
