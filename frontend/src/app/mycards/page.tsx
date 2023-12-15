@@ -66,7 +66,13 @@ export default function MyCards() {
                   card_img={card.base_image}
                   card_frame={card.frame_image!}
                 />
-                <CardShowcaseTradeBtn cardId={card.id!} />
+                {card.tradeable_status ? (
+                  <CardShowcaseTradeBtn cardId={card.id!} />
+                ) : (
+                  <h1 className="w-full p-2 flex gap-2 justify-center items-center font-bold text-[#1e2027] bg-[#e05f5f] rounded transform duration-500 ease-in-out">
+                    ALREADY IN TRADE OR SELLING
+                  </h1>
+                )}
               </div>
 
               {/* Card Showcase Info */}

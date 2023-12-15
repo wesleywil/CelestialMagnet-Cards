@@ -18,6 +18,7 @@ export interface Card {
   description: string;
   base_image: string;
   frame_image?: string;
+  tradeable_status:boolean;
 }
 
 export interface CardType {
