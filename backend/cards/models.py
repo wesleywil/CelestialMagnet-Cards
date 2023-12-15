@@ -24,6 +24,7 @@ class Card(models.Model):
     base_image = models.ImageField(upload_to='card_bases/')
     frame_image = models.ImageField(
         upload_to='card_frames/', null=True, blank=True)
+    tradeable_status = models.BooleanField(default=True)
 
     def __str__(self):
         return f"Card: {self.name} - {self.card_type.title} - {self.tier}"

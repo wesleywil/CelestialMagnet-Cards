@@ -24,7 +24,7 @@ class CardSerializer(serializers.ModelSerializer):
     class Meta:
         model = Card
         fields = ['id', 'owner', 'name', 'tier', 'card_type',
-                  'description', 'base_image', 'frame_image']
+                  'description', 'base_image', 'frame_image', 'tradeable_status']
 
 
 class CardPostSerializer(serializers.ModelSerializer):
@@ -32,7 +32,7 @@ class CardPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Card
         fields = ['id', 'owner', 'name', 'tier', 'card_type',
-                  'description', 'base_image', 'frame_image']
+                  'description', 'base_image', 'frame_image', 'tradeable_status']
 
 
 class CardTypeSerializer(serializers.ModelSerializer):
@@ -74,6 +74,7 @@ class CardListingField(serializers.RelatedField):
             'description': value.description,
             'base_image': self.get_image_url(value.base_image),
             'frame_image': self.get_image_url(value.frame_image),
+            'tradeable_status': value.tradeable_status,
         })
 
     def get_image_url(self, image_field):
