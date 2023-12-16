@@ -13,6 +13,7 @@ import CardShowcaseImage from "../card_showcase_image/card_showcase_image.compon
 
 const CardSell = () => {
   const [message, setMessage] = useState("");
+  const [price, setPrice] = useState("");
   const card = useSelector(
     (state: RootState) => state.usercards.userSelectedCard
   );
@@ -25,9 +26,18 @@ const CardSell = () => {
     const data: Transaction = {
       user: user.id!,
       owner_card: card.id!,
+      price: Number(price),
       transaction_type: TransactionType.Sell,
     };
     dispatch(createTransaction(data));
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+    const regex = /^[0-9]*(\.[0-9]{0,2})?$/;
+    if (regex.test(inputValue) || inputValue === "") {
+      setPrice(inputValue);
+    }
   };
 
   useEffect(() => {
@@ -65,6 +75,8 @@ const CardSell = () => {
           <span className="text-3xl">Price</span>
           <input
             type="text"
+            value={price}
+            onChange={handleInputChange}
             required
             placeholder="Desired Price - ex: $00.00"
             className="px-2 py-1 bg-[#e6eeee] text-[#1e2027] text-xl text-center font-semibold outline-0 rounded"
