@@ -1,4 +1,6 @@
+from django.db import transaction as django_transaction
 from django.http import Http404
+from django.shortcuts import get_object_or_404
 from rest_framework import status, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -222,12 +224,24 @@ class TransactionViewSet(APIView):
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        serializer = TransactionSerializer(
-            data=request.data, context={"request": request})
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            owner_card_id = request.data.get('owner_card')
+            card = get_object_or_404(Card, pk=owner_card_id)
+            if card.tradeable_status:
+                serializer = TransactionSerializer(
+                    data=request.data, context={"request": request})
+                if serializer.is_valid():
+                    with django_transaction.atomic():
+                        card.tradeable_status = False
+                        card.save()
+                        serializer.save()
+                    return Response(serializer.data, status=status.HTTP_201_CREATED)
+                else:
+                    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response({"message": "Card is not tradeable"}, status=status.HTTP_400_BAD_REQUEST)
+        except KeyError:
+            return Response({"message": "Invalid request data"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class TransactionDetailsViewSet(APIView):
@@ -255,6 +269,11 @@ class TransactionDetailsViewSet(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk, format=None):
+        owner_card_id = request.data.get('owner_card')
+        card = get_object_or_404(Card, pk=owner_card_id)
         transaction = self.get_object(pk)
-        transaction.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        with django_transaction.atomic():
+            card.tradeable_status = True
+            card.save()
+            transaction.delete()
+        return Response({"message": "Transaction Successfully deleted"}, status=status.HTTP_200_OK)
