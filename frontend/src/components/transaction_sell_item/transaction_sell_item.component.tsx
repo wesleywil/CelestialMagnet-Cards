@@ -29,6 +29,7 @@ const TransactionSellItem = ({ transaction }: { transaction: Transaction }) => {
         {pathName === "/mytransactions" ? (
           <RemoveListing
             user={user}
+            transaction_id={transaction.id!}
             message="Remove card from the selling listing?"
           />
         ) : (

@@ -40,6 +40,7 @@ const TransactionTradeItem = ({
         {pathName === "/mytransactions" ? (
           <RemoveListing
             user={user}
+            transaction_id={transaction.id!}
             message="Remove card from the trading listing?"
           />
         ) : (
