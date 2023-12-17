@@ -60,6 +60,27 @@ export const createTransaction = createAsyncThunk(
   }
 );
 
+export const deleteTransaction = createAsyncThunk(
+  "transactions/deleteTransaction",
+  async (id: number) => {
+    try {
+      const res = await fetch(`${url}/transactions/user/${id}`, {
+        method: "DELETE",
+        headers: headers,
+        credentials: "include",
+      });
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || "Failed to delete transaction");
+      }
+      const data = await res.json();
+      return data;
+    } catch (error: any) {
+      throw new Error(error.message || "Error while deleting transaction");
+    }
+  }
+);
+
 export const transactionSlice = createSlice({
   name: "transactions",
   initialState,
@@ -120,6 +141,22 @@ export const transactionSlice = createSlice({
         createTransaction.rejected,
         (state, action: PayloadAction<any>) => {
           state.status = "error while trying to create a transaction";
+          state.error = String(action.payload);
+        }
+      )
+      .addCase(deleteTransaction.pending, (state) => {
+        state.status = "deleting transaction";
+      })
+      .addCase(
+        deleteTransaction.fulfilled,
+        (state, action: PayloadAction<any>) => {
+          state.status = "transaction deleted successfully";
+        }
+      )
+      .addCase(
+        deleteTransaction.rejected,
+        (state, action: PayloadAction<any>) => {
+          state.status = "error while trying to delete a transaction";
           state.error = String(action.payload);
         }
       );
