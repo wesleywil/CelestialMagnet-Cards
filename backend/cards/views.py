@@ -269,9 +269,8 @@ class TransactionDetailsViewSet(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk, format=None):
-        owner_card_id = request.data.get('owner_card')
-        card = get_object_or_404(Card, pk=owner_card_id)
         transaction = self.get_object(pk)
+        card = get_object_or_404(Card, pk=transaction.owner_card.id)
         with django_transaction.atomic():
             card.tradeable_status = True
             card.save()
