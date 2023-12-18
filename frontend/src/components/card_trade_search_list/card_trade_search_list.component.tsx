@@ -14,7 +14,10 @@ const CardTradeSearchList = () => {
       {cards.length ? (
         <div className="w-72 flex flex-col gap-2 text-sm">
           {cards.map((item) => (
-            <div className="w-full flex justify-between  bg-[#1e2027] border">
+            <div
+              key={item.id!}
+              className="w-full flex justify-between  bg-[#1e2027] border"
+            >
               <h1 className="py-1 px-2">
                 {item.name} - {item.tier}
               </h1>
