@@ -63,7 +63,7 @@ export const cardSlice = createSlice({
         selectedCard !== undefined ? selectedCard : state.groupedCards[0];
     },
     selectCardById: (state, action: PayloadAction<number>) => {
-      const selectedCard = state.filteredByType.find(
+      const selectedCard = state.filteredByName.find(
         (item) => item.id === action.payload
       );
       state.selectedCard =
