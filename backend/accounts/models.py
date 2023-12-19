@@ -4,6 +4,7 @@ from PIL import Image
 
 
 class User(AbstractUser):
+    stripe_id = models.CharField(max_length=500, blank=True, null=True)
     picture = models.ImageField(
         upload_to='profiles/', default='profiles/default.jpg')
 
