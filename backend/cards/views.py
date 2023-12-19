@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import transaction as django_transaction
 from django.http import Http404
 from django.shortcuts import get_object_or_404
@@ -5,9 +6,10 @@ from rest_framework import status, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from knox.auth import TokenAuthentication
+import stripe
 
 
-from .models import Card, CardType, Transaction
+from .models import Card, CardType, Transaction, TransactionHistory
 from .serializers import (
     CardSerializer,
     CardPostSerializer,
@@ -15,6 +17,8 @@ from .serializers import (
     TransactionSerializer,
     TransactionViewerSerializer
 )
+
+stripe.api_key = settings.STRIPE_SCRET_KEY
 
 
 class CardsView(APIView):
@@ -276,3 +280,55 @@ class TransactionDetailsViewSet(APIView):
             card.save()
             transaction.delete()
         return Response({"message": "Transaction Successfully deleted"}, status=status.HTTP_200_OK)
+
+
+class CardSellView(APIView):
+    def post(self, request):
+        seller = request.data.get('user')
+        buyer_id = request.data.get('buyer')
+        card = request.data.get('card')
+        price = request.data.get('price')
+
+        # Calculate fee
+        business_fee = 0.1 * float(price)
+        amount_after_fee = float(price) - business_fee
+
+        # Charge buyer
+        try:
+            charge = stripe.Charge.create(
+                amount=int(price * 100),
+                currency="usd",
+                source=request.data.get('token'),
+                description=f'Purchage of a Card in Celestial Magnet Card App',
+            )
+
+            #  Create a transaction record
+            TransactionHistory.objects.create(
+                seller=seller,
+                buyer=buyer_id,
+                owner_card=card,
+                transaction_type='sell',
+                price=price
+            )
+
+            # Transfer the amount after your fee to the seller stripe account
+            transfer_to_seller = stripe.Transfer.create(
+                amount=int(amount_after_fee * 100),
+                currency='usd',
+                # This will be received by the buyer_id, after I udpate the User model by including the stripe id
+                destination='seller_stripe_account_id_here',
+                description=f'Payment for the sold card on the platform Celestial Magenet Cards'
+            )
+
+            # Transfer fee to the business account
+            transfer_fee_to_business = stripe.Transfer.create(
+                amount=int(business_fee * 100),
+                currency='usd',
+                # This will be received by the user id, after I udpate the User model by including the stripe id
+                destination='your_business_stripe_account_id_here',
+                description=f'Foor for a card sold in the platform'
+            )
+
+            return Response({'message': 'Transaction successfull'})
+        except stripe.CardError as e:
+            return Response({'error': str(e)}, status=e.http_status)
