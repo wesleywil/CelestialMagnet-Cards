@@ -14,11 +14,12 @@ from .serializers import (
     CardSerializer,
     CardPostSerializer,
     CardTypeSerializer,
+    TransactionHistorySerializer,
     TransactionSerializer,
     TransactionViewerSerializer
 )
 
-stripe.api_key = settings.STRIPE_SCRET_KEY
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
 class CardsView(APIView):
@@ -283,10 +284,13 @@ class TransactionDetailsViewSet(APIView):
 
 
 class CardSellView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = (TokenAuthentication,)
+
     def post(self, request):
-        seller = request.data.get('user')
+        seller_id = request.data.get('user')
         buyer_id = request.data.get('buyer')
-        card = request.data.get('card')
+        card_id = request.data.get('card')
         price = request.data.get('price')
 
         # Calculate fee
@@ -295,6 +299,20 @@ class CardSellView(APIView):
 
         # Charge buyer
         try:
+            transaction_data = {
+                'user': seller_id,
+                'buyer': buyer_id,
+                'owner_card': card_id,
+                'transaction_type': 'sell',
+                'price': price
+            }
+            serializer = TransactionHistorySerializer(
+                data=transaction_data, context={"request": request})
+            if serializer.is_valid():
+                serializer.save()
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            # Create a charge for the full amount
             charge = stripe.Charge.create(
                 amount=int(price * 100),
                 currency="usd",
@@ -302,21 +320,12 @@ class CardSellView(APIView):
                 description=f'Purchage of a Card in Celestial Magnet Card App',
             )
 
-            #  Create a transaction record
-            TransactionHistory.objects.create(
-                seller=seller,
-                buyer=buyer_id,
-                owner_card=card,
-                transaction_type='sell',
-                price=price
-            )
-
             # Transfer the amount after your fee to the seller stripe account
             transfer_to_seller = stripe.Transfer.create(
                 amount=int(amount_after_fee * 100),
                 currency='usd',
                 # This will be received by the buyer_id, after I udpate the User model by including the stripe id
-                destination='seller_stripe_account_id_here',
+                destination='acct_1OPSWMBpUlJQKbzn',
                 description=f'Payment for the sold card on the platform Celestial Magenet Cards'
             )
 
@@ -325,7 +334,7 @@ class CardSellView(APIView):
                 amount=int(business_fee * 100),
                 currency='usd',
                 # This will be received by the user id, after I udpate the User model by including the stripe id
-                destination='your_business_stripe_account_id_here',
+                destination='acct_1OP5M6JNB4HPvhaQ',
                 description=f'Foor for a card sold in the platform'
             )
 

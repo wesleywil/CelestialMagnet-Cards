@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Card, CardType, Transaction
+from .models import Card, CardType, Transaction, TransactionHistory
 
 
 class CardTypeListingField(serializers.RelatedField):
@@ -95,3 +95,10 @@ class TransactionViewerSerializer(serializers.ModelSerializer):
         model = Transaction
         fields = ['id', 'user', 'owner_card', 'desired_card',
                   'transaction_type', 'price', 'timestamp']
+
+
+class TransactionHistorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TransactionHistory
+        fields = ['id', 'user', 'buyer', 'owner_card',
+                  'desired_card', 'transaction_type', 'price']
