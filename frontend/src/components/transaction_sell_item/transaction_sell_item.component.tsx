@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Card, Transaction, User } from "@/utils/interfaces";
 
@@ -74,9 +75,12 @@ const TransactionSellItem = ({ transaction }: { transaction: Transaction }) => {
         {pathName === "/mytransactions" ? (
           ""
         ) : (
-          <button className="w-full py-1 bg-[#e05f5f] hover:bg-[#e6eeee] font-bold uppercase transform duration-500 ease-in-out">
-            Action
-          </button>
+          <Link
+            href="/payment"
+            className="w-full py-1 bg-[#e05f5f] hover:bg-[#e6eeee] font-bold text-center uppercase transform duration-500 ease-in-out"
+          >
+            Buy
+          </Link>
         )}
       </div>
     </div>
