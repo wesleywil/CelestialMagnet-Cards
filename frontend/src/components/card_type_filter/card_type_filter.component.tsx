@@ -5,36 +5,60 @@ import { filterByCardType, resetFilter } from "@/redux/cards/cards";
 const CardTypeFilter = () => {
   const dispatch = useDispatch<AppDispatch>();
   return (
-    <div className="xl:w-11/12 mt-12 flex gap-2">
+    <div className="xl:w-11/12 mt-12 mb-1 py-1 flex gap-2 text-xl">
       <button
         onClick={() => dispatch(resetFilter())}
-        className="px-2 py-1 font-bold text-[#e6eeee] hover:text-[#e05f5f] border border-[#e6eeee] hover:border-[#e05f5f] rounded transform duration-500 ease-in-out"
+        className="w-12 px-2 py-1 font-bold text-[#e6eeee] hover:text-[#1e2027] hover:bg-[#e6eeee] border border-[#e6eeee] hover:border-[#1e2027] rounded transform duration-500 ease-in-out"
       >
         All
       </button>
       <button
         onClick={() => dispatch(filterByCardType("Fire"))}
-        className="px-2 py-1 font-bold text-black bg-red-200 hover:bg-red-500 rounded transform duration-500 ease-in-out"
+        style={{
+          backgroundImage: "url(/fire_crystal.jpg)",
+          backgroundSize: "cover",
+        }}
+        className="w-12 flex items-center font-bold bg-red-200 hover:bg-red-500  rounded "
       >
-        Fire
+        <span className="w-full bg-[#1e2027]/60 hover:bg-[#1e2027] backdrop-blur-sm transform duration-500 ease-in-out">
+          Fire
+        </span>
       </button>
       <button
         onClick={() => dispatch(filterByCardType("Air"))}
-        className="px-2 py-1 font-bold text-black bg-green-200 hover:bg-green-500 rounded transform duration-500 ease-in-out"
+        style={{
+          backgroundImage: "url(/air_crystal.jpg)",
+          backgroundSize: "cover",
+        }}
+        className="w-12 flex items-center font-bold bg-green-200 hover:bg-green-500  rounded"
       >
-        Air
+        <span className="w-full bg-[#1e2027]/60 hover:bg-[#1e2027] backdrop-blur-sm transform duration-500 ease-in-out">
+          Air
+        </span>
       </button>
       <button
         onClick={() => dispatch(filterByCardType("Earth"))}
-        className="px-2 py-1 font-bold text-black bg-amber-200 hover:bg-amber-500 rounded transform duration-500 ease-in-out"
+        style={{
+          backgroundImage: "url(/earth_crystal.jpg)",
+          backgroundSize: "cover",
+        }}
+        className="w-12 flex items-center font-bold bg-amber-200 hover:bg-amber-500  rounded"
       >
-        Earth
+        <span className="w-full bg-[#1e2027]/60 hover:bg-[#1e2027]  backdrop-blur-sm transform duration-500 ease-in-out">
+          Earth
+        </span>
       </button>
       <button
         onClick={() => dispatch(filterByCardType("Water"))}
-        className="px-2 py-1 font-bold text-black bg-cyan-200 hover:bg-cyan-500 rounded transform duration-500 ease-in-out"
+        style={{
+          backgroundImage: "url(/water_crystal.jpg)",
+          backgroundSize: "cover",
+        }}
+        className="w-12 flex items-center font-bold bg-cyan-200 hover:bg-cyan-500  rounded"
       >
-        Water
+        <span className="w-full bg-[#1e2027]/60 hover:bg-[#1e2027] backdrop-blur-sm transform duration-500 ease-in-out">
+          Water
+        </span>
       </button>
     </div>
   );
