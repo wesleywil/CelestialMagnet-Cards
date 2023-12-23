@@ -1,4 +1,30 @@
+"use client";
+
+import { useSelector } from "react-redux";
+import type { RootState } from "@/redux/store";
+import { Card, CardType, User } from "@/utils/interfaces";
+
 export default function Payment() {
+  const transaction = useSelector(
+    (state: RootState) => state.transactions.transaction
+  );
+
+  let ownerCard: Card = {} as Card;
+
+  let user: User = {} as User;
+
+  let cardType: CardType = {} as CardType;
+
+  if (typeof transaction.owner_card !== "number") {
+    ownerCard = transaction.owner_card;
+  }
+  if (typeof transaction.user !== "number") {
+    user = transaction.user!;
+  }
+
+  if (typeof ownerCard.card_type !== "number") {
+    cardType = ownerCard.card_type;
+  }
   return (
     <main
       className="p-2 py-24 md:p-24 flex min-h-screen flex-col items-center 
@@ -15,23 +41,25 @@ export default function Payment() {
           <div className="w-full p-2 flex justify-between">
             {/* Info */}
             <div className="w-full mt-2 flex flex-col text-2xl">
-              <h2>Card Name</h2>
+              <h2>{ownerCard.name}</h2>
               <div className="mt-3 flex gap-2 text-base">
                 <h3>
-                  <span className="text-gray-400">Tier:</span> Bronze
+                  <span className="text-gray-400">Tier:</span> {ownerCard.tier}
                 </h3>
                 |
                 <h3>
-                  <span className="text-gray-400">Type:</span> Fire
+                  <span className="text-gray-400">Type:</span> {cardType.title}
                 </h3>
               </div>
               <h2 className="mt-2 text-xl">
-                <span className="text-gray-400">Owner:</span> wesleyogrande
+                <span className="text-gray-400">Owner:</span> {user.username}
               </h2>
             </div>
             <div className="h-full border"></div>
             {/* Price */}
-            <h1 className="w-full self-center text-4xl text-center">$ 00.00</h1>
+            <h1 className="w-full self-center text-4xl text-center">
+              $ {transaction.price}
+            </h1>
           </div>
         </div>
         <button className="w-full mt-2 px-2 py-2 text-3xl font-bold hover:text-[#1e2027] bg-[#e05f5f] hover:bg-[#e6eeee] rounded transform duration-500 ease-in-out">
