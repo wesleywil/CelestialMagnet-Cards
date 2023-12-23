@@ -88,6 +88,15 @@ export const transactionSlice = createSlice({
     addTransaction: (state, action: PayloadAction<Transaction>) => {
       state.transaction = { ...action.payload };
     },
+    selectTransactionById: (state, action: PayloadAction<number>) => {
+      const selectedTransaction = state.transactions.find(
+        (item) => item.id === action.payload
+      );
+      state.transaction =
+        selectedTransaction !== undefined
+          ? selectedTransaction
+          : ({} as Transaction);
+    },
     resetStatus: (state) => {
       state.status = "idle";
     },
@@ -163,6 +172,7 @@ export const transactionSlice = createSlice({
   },
 });
 
-export const { addTransaction, resetStatus } = transactionSlice.actions;
+export const { addTransaction, selectTransactionById, resetStatus } =
+  transactionSlice.actions;
 
 export default transactionSlice.reducer;
