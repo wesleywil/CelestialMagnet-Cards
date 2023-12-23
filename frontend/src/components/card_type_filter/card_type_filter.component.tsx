@@ -1,6 +1,7 @@
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "@/redux/store";
 import { filterByCardType, resetFilter } from "@/redux/cards/cards";
+import CardTypeButton from "../card_type_button/card_type_button.component";
 
 const CardTypeFilter = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -12,54 +13,26 @@ const CardTypeFilter = () => {
       >
         All
       </button>
-      <button
-        onClick={() => dispatch(filterByCardType("Fire"))}
-        style={{
-          backgroundImage: "url(/fire_crystal.jpg)",
-          backgroundSize: "cover",
-        }}
-        className="w-12 flex items-center font-bold bg-red-200 hover:bg-red-500  rounded "
-      >
-        <span className="w-full bg-[#1e2027]/60 hover:bg-[#1e2027] backdrop-blur-sm transform duration-500 ease-in-out">
-          Fire
-        </span>
-      </button>
-      <button
-        onClick={() => dispatch(filterByCardType("Air"))}
-        style={{
-          backgroundImage: "url(/air_crystal.jpg)",
-          backgroundSize: "cover",
-        }}
-        className="w-12 flex items-center font-bold bg-green-200 hover:bg-green-500  rounded"
-      >
-        <span className="w-full bg-[#1e2027]/60 hover:bg-[#1e2027] backdrop-blur-sm transform duration-500 ease-in-out">
-          Air
-        </span>
-      </button>
-      <button
-        onClick={() => dispatch(filterByCardType("Earth"))}
-        style={{
-          backgroundImage: "url(/earth_crystal.jpg)",
-          backgroundSize: "cover",
-        }}
-        className="w-12 flex items-center font-bold bg-amber-200 hover:bg-amber-500  rounded"
-      >
-        <span className="w-full bg-[#1e2027]/60 hover:bg-[#1e2027]  backdrop-blur-sm transform duration-500 ease-in-out">
-          Earth
-        </span>
-      </button>
-      <button
-        onClick={() => dispatch(filterByCardType("Water"))}
-        style={{
-          backgroundImage: "url(/water_crystal.jpg)",
-          backgroundSize: "cover",
-        }}
-        className="w-12 flex items-center font-bold bg-cyan-200 hover:bg-cyan-500  rounded"
-      >
-        <span className="w-full bg-[#1e2027]/60 hover:bg-[#1e2027] backdrop-blur-sm transform duration-500 ease-in-out">
-          Water
-        </span>
-      </button>
+      <CardTypeButton
+        typeName="Fire"
+        backgroundImage="/fire_crystal.jpg"
+        action={() => dispatch(filterByCardType("Fire"))}
+      />
+      <CardTypeButton
+        typeName="Air"
+        backgroundImage="/air_crystal.jpg"
+        action={() => dispatch(filterByCardType("Air"))}
+      />
+      <CardTypeButton
+        typeName="Earth"
+        backgroundImage="/earth_crystal.jpg"
+        action={() => dispatch(filterByCardType("Earth"))}
+      />
+      <CardTypeButton
+        typeName="Water"
+        backgroundImage="/water_crystal.jpg"
+        action={() => dispatch(filterByCardType("Water"))}
+      />
     </div>
   );
 };
