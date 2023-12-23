@@ -4,6 +4,7 @@ import { Card, Transaction, User } from "@/utils/interfaces";
 
 // Components
 import RemoveListing from "../remove_listing/remove_listing.component";
+import TransactionSellButton from "../transaction_sell_button/transaction_sell_button.component";
 
 const TransactionSellItem = ({ transaction }: { transaction: Transaction }) => {
   const pathName = usePathname();
@@ -69,19 +70,12 @@ const TransactionSellItem = ({ transaction }: { transaction: Transaction }) => {
               ></div>
             </div>
             {/* Price */}
-            <h1 className="text-center text-2xl text-[#e05f5f]">$ 18.60</h1>
+            <h1 className="text-center text-2xl text-[#e05f5f]">
+              $ {transaction.price}
+            </h1>
           </div>
         </div>
-        {pathName === "/mytransactions" ? (
-          ""
-        ) : (
-          <Link
-            href="/payment"
-            className="w-full py-1 bg-[#e05f5f] hover:bg-[#e6eeee] font-bold text-center uppercase transform duration-500 ease-in-out"
-          >
-            Buy
-          </Link>
-        )}
+        <TransactionSellButton id={transaction.id!} />
       </div>
     </div>
   );
