@@ -2,29 +2,15 @@
 
 import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/store";
-import { Card, CardType, User } from "@/utils/interfaces";
+import { processTransaction } from "@/utils/transactionUtils";
 
 export default function Payment() {
   const transaction = useSelector(
     (state: RootState) => state.transactions.transaction
   );
 
-  let ownerCard: Card = {} as Card;
+  const { ownerCard, user, cardType } = processTransaction(transaction);
 
-  let user: User = {} as User;
-
-  let cardType: CardType = {} as CardType;
-
-  if (typeof transaction.owner_card !== "number") {
-    ownerCard = transaction.owner_card;
-  }
-  if (typeof transaction.user !== "number") {
-    user = transaction.user!;
-  }
-
-  if (typeof ownerCard.card_type !== "number") {
-    cardType = ownerCard.card_type;
-  }
   return (
     <main
       className="p-2 py-24 md:p-24 flex min-h-screen flex-col items-center 
@@ -48,7 +34,7 @@ export default function Payment() {
                 </h3>
                 |
                 <h3>
-                  <span className="text-gray-400">Type:</span> {cardType.title}
+                  <span className="text-gray-400">Type:</span> {cardType!.title}
                 </h3>
               </div>
               <h2 className="mt-2 text-xl">

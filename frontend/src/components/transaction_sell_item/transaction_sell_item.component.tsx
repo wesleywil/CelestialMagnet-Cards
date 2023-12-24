@@ -1,24 +1,15 @@
-import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Card, Transaction, User } from "@/utils/interfaces";
+import { Transaction } from "@/utils/interfaces";
 
 // Components
 import RemoveListing from "../remove_listing/remove_listing.component";
 import TransactionSellButton from "../transaction_sell_button/transaction_sell_button.component";
+import { processTransaction } from "@/utils/transactionUtils";
 
 const TransactionSellItem = ({ transaction }: { transaction: Transaction }) => {
   const pathName = usePathname();
 
-  let ownerCard: Card = {} as Card;
-
-  let user: User = {} as User;
-
-  if (typeof transaction.owner_card !== "number") {
-    ownerCard = transaction.owner_card;
-  }
-  if (typeof transaction.user !== "number") {
-    user = transaction.user!;
-  }
+  const { ownerCard, user } = processTransaction(transaction);
 
   const owner_card_frame = `http://localhost:8000${ownerCard.frame_image}`;
   const owner_card_img = `http://localhost:8000${ownerCard.base_image}`;

@@ -1,4 +1,5 @@
 import { Card, Transaction, User } from "@/utils/interfaces";
+import { processTransaction } from "@/utils/transactionUtils";
 import { usePathname } from "next/navigation";
 import { FaArrowRight } from "react-icons/fa";
 
@@ -12,25 +13,13 @@ const TransactionTradeItem = ({
 }) => {
   const pathName = usePathname();
 
-  let ownerCard: Card = {} as Card;
-  let desiredCard: Card = {} as Card;
-  let user: User = {} as User;
-
-  if (typeof transaction.owner_card !== "number") {
-    ownerCard = transaction.owner_card;
-  }
-  if (typeof transaction.desired_card !== "number") {
-    desiredCard = transaction.desired_card!;
-  }
-  if (typeof transaction.user !== "number") {
-    user = transaction.user!;
-  }
+  const { ownerCard, desiredCard, user } = processTransaction(transaction);
 
   const owner_card_frame = `http://localhost:8000${ownerCard.frame_image}`;
   const owner_card_img = `http://localhost:8000${ownerCard.base_image}`;
 
-  const desired_card_frame = `http://localhost:8000${desiredCard.frame_image}`;
-  const desired_card_img = `http://localhost:8000${desiredCard.base_image}`;
+  const desired_card_frame = `http://localhost:8000${desiredCard!.frame_image}`;
+  const desired_card_img = `http://localhost:8000${desiredCard!.base_image}`;
   return (
     <div
       style={
@@ -84,7 +73,7 @@ const TransactionTradeItem = ({
           </div>
           {/* Desired Card */}
           <div className="flex flex-col gap-2">
-            <h1 className="text-center">{desiredCard.name}</h1>
+            <h1 className="text-center">{desiredCard!.name}</h1>
             <div className="relative w-[12rem] h-[15rem] overflow-hidden border">
               {/* Frame */}
               <div
