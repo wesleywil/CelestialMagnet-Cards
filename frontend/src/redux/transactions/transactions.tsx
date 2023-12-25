@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { Transaction } from "@/utils/interfaces";
 import { headers } from "../user/user";
+import { Token } from "@stripe/stripe-js";
 
 export interface TransactionState {
   transactions: Transaction[];
@@ -77,6 +78,34 @@ export const deleteTransaction = createAsyncThunk(
       return data;
     } catch (error: any) {
       throw new Error(error.message || "Error while deleting transaction");
+    }
+  }
+);
+
+export const sellCardTransaction = createAsyncThunk(
+  "transactions/sellCardTransaction",
+  async (data: {
+    user: number;
+    buyer: number;
+    card: number;
+    price: number;
+    token: string;
+  }) => {
+    try {
+      const res = await fetch(`${url}/sell/`, {
+        method: "POST",
+        headers: headers,
+        credentials: "include",
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || "Failed to sell card item");
+      }
+      const dataSell = await res.json();
+      return dataSell;
+    } catch (error: any) {
+      throw new Error(error.message || "Error while trying to sell card");
     }
   }
 );
@@ -166,6 +195,22 @@ export const transactionSlice = createSlice({
         deleteTransaction.rejected,
         (state, action: PayloadAction<any>) => {
           state.status = "error while trying to delete a transaction";
+          state.error = String(action.payload);
+        }
+      )
+      .addCase(sellCardTransaction.pending, (state) => {
+        state.status = "trying to sell card";
+      })
+      .addCase(
+        sellCardTransaction.fulfilled,
+        (state, action: PayloadAction<any>) => {
+          state.status = "card was sold successfully";
+        }
+      )
+      .addCase(
+        sellCardTransaction.rejected,
+        (state, action: PayloadAction<any>) => {
+          state.status = "failed to sell card";
           state.error = String(action.payload);
         }
       );
