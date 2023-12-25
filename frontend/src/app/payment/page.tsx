@@ -1,29 +1,24 @@
 "use client";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   CardCvcElement,
-  CardElement,
   CardExpiryElement,
   CardNumberElement,
   useElements,
   useStripe,
 } from "@stripe/react-stripe-js";
-import {
-  StripeCardElement,
-  StripeCardNumberElement,
-  StripeCardExpiryElement,
-  StripeCardCvcElement,
-} from "@stripe/stripe-js";
-import type { RootState } from "@/redux/store";
+import type { AppDispatch, RootState } from "@/redux/store";
 
 // Components
 import PaymentItem from "@/components/payment_item/payment_item.component";
+import { sellCardTransaction } from "@/redux/transactions/transactions";
 
 export default function Payment() {
   const transaction = useSelector(
     (state: RootState) => state.transactions.transaction
   );
+  const dispatch = useDispatch<AppDispatch>();
 
   const stripe = useStripe();
   const elements = useElements();
@@ -47,6 +42,14 @@ export default function Payment() {
       console.log("Error => ", error);
     } else {
       console.log("Token => ", token);
+      const data = {
+        user: 1,
+        buyer: 2,
+        card: 322,
+        price: 18.5,
+        token: token.id,
+      };
+      dispatch(sellCardTransaction(data));
     }
   };
 
@@ -63,9 +66,14 @@ export default function Payment() {
         text-[#e6eeee] z-0"
     >
       <h1 className="text-5xl font-bold">Payment Page</h1>
-      <div className="w-fit flex flex-col mt-4 p-2 border">
-        <PaymentItem transaction={transaction} />
-        <div className="mt-4 p-2 flex flex-col border">
+      <div className="w-fit flex flex-col mt-4 p-2 border rounded">
+        {Object.keys(transaction).length ? (
+          <PaymentItem transaction={transaction} />
+        ) : (
+          <h1 className="px-2 py-1 text-4xl text-center">NO ITEMS</h1>
+        )}
+
+        <div className="mt-4 p-2 flex flex-col border rounded">
           <h1>Credit Card Payment</h1>
           <div className="w-full mt-2 flex gap-2 text-xl">
             <CardNumberElement
@@ -82,7 +90,7 @@ export default function Payment() {
             />
           </div>
           {/* <CardElement id="card-element" options={cardStyle} /> */}
-          <div className="mt-2 text-xl md:text-2xl text-[#e6eeee  ] flex flex-col md:flex-row md:flex-wrap md:gap-4 md:justify-center items-center">
+          <div className="mt-2 text-xl text-[#e6eeee] flex flex-col md:flex-row md:flex-wrap md:gap-4 md:justify-center items-center">
             <h1 className="w-full text-center mb-2 md:mb-0 border-b">
               Test Card Info
             </h1>
