@@ -43,10 +43,7 @@ export default function Payment() {
     } else {
       console.log("Token => ", token);
       const data = {
-        user: 1,
-        buyer: 2,
-        card: 322,
-        price: 18.5,
+        transaction_id: transaction.id!,
         token: token.id,
       };
       dispatch(sellCardTransaction(data));
@@ -56,7 +53,7 @@ export default function Payment() {
   const cardStyle = {
     style: {
       base: {
-        fontSize: "1.5rem",
+        fontSize: "24px",
       },
     },
   };

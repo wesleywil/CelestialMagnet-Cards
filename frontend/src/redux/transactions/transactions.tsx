@@ -84,13 +84,7 @@ export const deleteTransaction = createAsyncThunk(
 
 export const sellCardTransaction = createAsyncThunk(
   "transactions/sellCardTransaction",
-  async (data: {
-    user: number;
-    buyer: number;
-    card: number;
-    price: number;
-    token: string;
-  }) => {
+  async (data: { transaction_id: number; token: string }) => {
     try {
       const res = await fetch(`${url}/sell/`, {
         method: "POST",
