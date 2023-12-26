@@ -7,8 +7,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from knox.auth import TokenAuthentication
 import stripe
+import environ
 
 
+from accounts.models import User
 from .models import Card, CardType, Transaction, TransactionHistory
 from .serializers import (
     CardSerializer,
@@ -20,6 +22,8 @@ from .serializers import (
 )
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
+
+env = environ.Env()
 
 
 class CardsView(APIView):
@@ -288,56 +292,61 @@ class CardSellView(APIView):
     authentication_classes = (TokenAuthentication,)
 
     def post(self, request):
-        seller_id = request.data.get('user')
-        buyer_id = request.data.get('buyer')
-        card_id = request.data.get('card')
-        price = request.data.get('price')
+        transaction_id = request.data.get('transaction_id')
+        logged_user_id = request.user.pk
+        token = request.data.get('token')
 
-        # Calculate fee
-        business_fee = 0.1 * float(price)
-        amount_after_fee = float(price) - business_fee
+        transaction = Transaction.objects.get(pk=transaction_id)
 
-        # Charge buyer
-        try:
-            transaction_data = {
-                'user': seller_id,
-                'buyer': buyer_id,
-                'owner_card': card_id,
-                'transaction_type': 'sell',
-                'price': price
-            }
-            serializer = TransactionHistorySerializer(
-                data=transaction_data, context={"request": request})
-            if serializer.is_valid():
-                serializer.save()
-            else:
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-            # Create a charge for the full amount
-            charge = stripe.Charge.create(
-                amount=int(price * 100),
-                currency="usd",
-                source=request.data.get('token'),
-                description=f'Purchage of a Card in Celestial Magnet Card App',
-            )
+        # Verify if Transaction Exists
+        if (transaction):
+            # Calculate fee
+            business_fee = 0.1 * float(transaction.price)
+            amount_after_fee = float(transaction.price) - business_fee
 
-            # Transfer the amount after your fee to the seller stripe account
-            transfer_to_seller = stripe.Transfer.create(
-                amount=int(amount_after_fee * 100),
-                currency='usd',
-                # This will be received by the buyer_id, after I udpate the User model by including the stripe id
-                destination='acct_1OPSWMBpUlJQKbzn',
-                description=f'Payment for the sold card on the platform Celestial Magenet Cards'
-            )
+            # Charge buyer
+            try:
+                transaction_data = {
+                    'user': transaction.user.pk,
+                    'buyer': logged_user_id,
+                    'owner_card': transaction.owner_card.pk,
+                    'transaction_type': transaction.transaction_type,
+                    'price': transaction.price
+                }
+                serializer = TransactionHistorySerializer(
+                    data=transaction_data, context={"request": request})
+                if serializer.is_valid():
+                    serializer.save()
+                else:
+                    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                # Create a charge for the full amount
+                charge = stripe.Charge.create(
+                    amount=int(transaction.price * 100),
+                    currency="usd",
+                    source=token,
+                    description=f'Purchage of a Card in Celestial Magnet Card App',
+                )
 
-            # Transfer fee to the business account
-            transfer_fee_to_business = stripe.Transfer.create(
-                amount=int(business_fee * 100),
-                currency='usd',
-                # This will be received by the user id, after I udpate the User model by including the stripe id
-                destination='acct_1OP5M6JNB4HPvhaQ',
-                description=f'Foor for a card sold in the platform'
-            )
+                # Transfer the amount after your fee to the seller stripe account
+                transfer_to_seller = stripe.Transfer.create(
+                    amount=int(amount_after_fee * 100),
+                    currency='usd',
+                    # This will be received by the seller of the card(transaction.user.stripe_id), after I udpate the User model by including the stripe id
+                    destination=transaction.user.stripe_id,
+                    description=f'Payment for the sold card on the platform Celestial Magenet Cards'
+                )
 
-            return Response({'message': 'Transaction successfull'})
-        except stripe.CardError as e:
-            return Response({'error': str(e)}, status=e.http_status)
+                # Transfer fee to the business account
+                transfer_fee_to_business = stripe.Transfer.create(
+                    amount=int(business_fee * 100),
+                    currency='usd',
+                    # This should be a different account corresponding the business
+                    destination=env('STRIPE_BUSINESS_ACCOUNT_ID'),
+                    description=f'For for a card sold in the platform'
+                )
+
+                return Response({'message': 'Transaction successfull'})
+            except stripe.CardError as e:
+                return Response({'error': str(e)}, status=e.http_status)
+        else:
+            return Response({'message': 'This Transaction does not exist'}, status=status.HTTP_404_NOT_FOUND)
