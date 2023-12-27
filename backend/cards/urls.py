@@ -14,7 +14,8 @@ from .views import (
     TransactionDetailsView,
     TransactionViewSet,
     TransactionDetailsViewSet,
-    CardSellView
+    CardSellView,
+    CardTradeView
 )
 
 app_name = "cards_apis"
@@ -42,6 +43,8 @@ urlpatterns = [
          name='user_transactions'),
     path('transactions/user/<int:pk>/', TransactionDetailsViewSet.as_view(),
          name='details_transactions'),
-    path('sell/', CardSellView.as_view(), name='card_sell')
+    # Trade & Sell
+    path('sell/', CardSellView.as_view(), name='card_sell'),
+    path('trade/', CardTradeView.as_view(), name='card_trade')
 
 ]

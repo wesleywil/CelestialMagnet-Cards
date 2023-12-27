@@ -316,6 +316,10 @@ class CardSellView(APIView):
                 serializer = TransactionHistorySerializer(
                     data=transaction_data, context={"request": request})
                 if serializer.is_valid():
+                    card = Card.objects.filter(pk=transaction.owner_card.pk).update(
+                        owner=logged_user_id
+                    )
+                    card.save()
                     serializer.save()
                 else:
                     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -348,5 +352,40 @@ class CardSellView(APIView):
                 return Response({'message': 'Transaction successfull'})
             except stripe.CardError as e:
                 return Response({'error': str(e)}, status=e.http_status)
+        else:
+            return Response({'message': 'This Transaction does not exist'}, status=status.HTTP_404_NOT_FOUND)
+
+
+class CardTradeView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = (TokenAuthentication,)
+
+    def post(self, request):
+        transaction_id = request.data.get('transaction_id')
+        logged_user_id = request.user.pk
+
+        transaction = Transaction.objects.get(pk=transaction_id)
+
+        if (transaction):
+            desired_card_owner = Card.objects.get(
+                owner__id=logged_user_id, pk=transaction.desired_card.id)
+            if (desired_card_owner):
+                transaction_data = {
+                    'user': transaction.user.pk,
+                    'buyer': logged_user_id,
+                    'owner_card': transaction.owner_card.id,
+                    'desired_card': transaction.desired_card.id,
+                    'transaction_type': transaction.transaction_type
+                }
+                serializer = TransactionHistorySerializer(
+                    data=transaction_data, context={"request": request})
+                if serializer.is_valid():
+                    serializer.save()
+                else:
+                    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response({'message': "You don't own the card your're trying to trade"})
+
+            return Response({'message': 'Trade was done successfully'})
         else:
             return Response({'message': 'This Transaction does not exist'}, status=status.HTTP_404_NOT_FOUND)
