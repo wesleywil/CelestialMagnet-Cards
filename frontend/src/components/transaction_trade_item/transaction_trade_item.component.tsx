@@ -1,10 +1,15 @@
-import { Card, Transaction, User } from "@/utils/interfaces";
-import { processTransaction } from "@/utils/transactionUtils";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { usePathname } from "next/navigation";
 import { FaArrowRight } from "react-icons/fa";
+import { Transaction } from "@/utils/interfaces";
+import { processTransaction } from "@/utils/transactionUtils";
+import type { AppDispatch } from "@/redux/store";
+import { tradeCardTransaction } from "@/redux/transactions/transactions";
 
 // Components
 import RemoveListing from "../remove_listing/remove_listing.component";
+import CardShowcaseImage from "../card_showcase_image/card_showcase_image.component";
 
 const TransactionTradeItem = ({
   transaction,
@@ -12,14 +17,22 @@ const TransactionTradeItem = ({
   transaction: Transaction;
 }) => {
   const pathName = usePathname();
+  const [hideConfirmation, setHideConfirmation] = useState(true);
+  const dispatch = useDispatch<AppDispatch>();
 
   const { ownerCard, desiredCard, user } = processTransaction(transaction);
 
-  const owner_card_frame = `http://localhost:8000${ownerCard.frame_image}`;
-  const owner_card_img = `http://localhost:8000${ownerCard.base_image}`;
+  const url = "http://localhost:8000";
 
-  const desired_card_frame = `http://localhost:8000${desiredCard!.frame_image}`;
-  const desired_card_img = `http://localhost:8000${desiredCard!.base_image}`;
+  const owner_card_frame = `${url}${ownerCard.frame_image}`;
+  const owner_card_img = `${url}${ownerCard.base_image}`;
+
+  const desired_card_frame = `${url}${desiredCard!.frame_image}`;
+  const desired_card_img = `${url}${desiredCard!.base_image}`;
+
+  const handleTrade = () => {
+    dispatch(tradeCardTransaction(transaction.id!));
+  };
   return (
     <div
       style={
@@ -48,25 +61,14 @@ const TransactionTradeItem = ({
           {/* Owner Card */}
           <div className="flex flex-col gap-2">
             <h1 className="text-center">{ownerCard.name}</h1>
-            <div className="relative w-[12rem] h-[15rem] overflow-hidden border">
-              {/* Frame */}
-              <div
-                style={{
-                  backgroundImage: `url(${owner_card_frame})`,
-                  backgroundSize: "cover",
-                  backgroundRepeat: "no-repeat",
-                }}
-                className="w-full h-full absolute top-0 left-0 z-10"
-              ></div>
-              {/* Base Image */}
-              <div
-                style={{
-                  backgroundImage: `url(${owner_card_img})`,
-                  backgroundSize: "cover",
-                }}
-                className="w-full h-full absolute top-0 left-0 z-0"
-              ></div>
-            </div>
+            <CardShowcaseImage
+              cardImg={owner_card_img}
+              cardFrame={owner_card_frame}
+              containerWidth="w-[12rem]"
+              containerHeight="h-[15rem]"
+              backgroundSize="cover"
+              baseHeight="h-full"
+            />
           </div>
           <div className="self-center text-3xl text-[#e05f5f] font-bold">
             <FaArrowRight />
@@ -74,33 +76,48 @@ const TransactionTradeItem = ({
           {/* Desired Card */}
           <div className="flex flex-col gap-2">
             <h1 className="text-center">{desiredCard!.name}</h1>
-            <div className="relative w-[12rem] h-[15rem] overflow-hidden border">
-              {/* Frame */}
-              <div
-                style={{
-                  backgroundImage: `url(${desired_card_frame})`,
-                  backgroundSize: "cover",
-                  backgroundRepeat: "no-repeat",
-                }}
-                className="w-full h-full absolute top-0 left-0 z-10"
-              ></div>
-              {/* Base Image */}
-              <div
-                style={{
-                  backgroundImage: `url(${desired_card_img})`,
-                  backgroundSize: "cover",
-                }}
-                className="w-full h-full absolute top-0 left-0 z-0"
-              ></div>
-            </div>
+            <CardShowcaseImage
+              cardImg={desired_card_img}
+              cardFrame={desired_card_frame}
+              containerWidth="w-[12rem]"
+              containerHeight="h-[15rem]"
+              backgroundSize="cover"
+              baseHeight="h-full"
+            />
           </div>
         </div>
         {pathName === "/mytransactions" ? (
           ""
         ) : (
-          <button className="w-full py-1 bg-[#e05f5f] hover:bg-[#e6eeee] font-bold uppercase transform duration-500 ease-in-out">
-            Action
-          </button>
+          <div className="flex flex-col">
+            {hideConfirmation ? (
+              <button
+                onClick={() => setHideConfirmation(false)}
+                className="w-full py-1 bg-[#e05f5f] hover:bg-[#e6eeee] font-bold uppercase transform duration-500 ease-in-out"
+              >
+                Action
+              </button>
+            ) : (
+              <div className="w-full flex flex-col items-center bg-[#e05f5f] text-2xl transform duration-500 ease-in-out">
+                <h1 className="text-white">Are you relly making this trade?</h1>
+                <div className="flex justify-center gap-2">
+                  <button
+                    onClick={handleTrade}
+                    className="px-2 bg-[#1e2027] hover:bg-[#e6eeee] text-[#e6eeee] hover:text-[#1e2027] rounded transform duration-500 ease-in-out"
+                  >
+                    YES
+                  </button>
+                  |{" "}
+                  <button
+                    onClick={() => setHideConfirmation(true)}
+                    className="px-2 bg-[#1e2027] hover:bg-[#e6eeee] text-[#e6eeee] hover:text-[#1e2027] rounded transform duration-500 ease-in-out"
+                  >
+                    NO
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
         )}
       </div>
     </div>

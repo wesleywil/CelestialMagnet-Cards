@@ -2,7 +2,6 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { Transaction } from "@/utils/interfaces";
 import { headers } from "../user/user";
-import { Token } from "@stripe/stripe-js";
 
 export interface TransactionState {
   transactions: Transaction[];
@@ -100,6 +99,30 @@ export const sellCardTransaction = createAsyncThunk(
       return dataSell;
     } catch (error: any) {
       throw new Error(error.message || "Error while trying to sell card");
+    }
+  }
+);
+
+export const tradeCardTransaction = createAsyncThunk(
+  "transactions/tradeCardTransaction",
+  async (transaction_id: number) => {
+    try {
+      const res = await fetch(`${url}/trade/`, {
+        method: "POST",
+        headers: headers,
+        credentials: "include",
+        body: JSON.stringify({
+          transaction_id: transaction_id,
+        }),
+      });
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || "Failed to trade card item");
+      }
+      const dataSell = await res.json();
+      return dataSell;
+    } catch (error: any) {
+      throw new Error(error.message || "Error while trying to trade card");
     }
   }
 );
@@ -205,6 +228,22 @@ export const transactionSlice = createSlice({
         sellCardTransaction.rejected,
         (state, action: PayloadAction<any>) => {
           state.status = "failed to sell card";
+          state.error = String(action.payload);
+        }
+      )
+      .addCase(tradeCardTransaction.pending, (state) => {
+        state.status = "trying to trade card";
+      })
+      .addCase(
+        tradeCardTransaction.fulfilled,
+        (state, action: PayloadAction<any>) => {
+          state.status = "card was traded successfully";
+        }
+      )
+      .addCase(
+        tradeCardTransaction.rejected,
+        (state, action: PayloadAction<any>) => {
+          state.status = "failed to trade card";
           state.error = String(action.payload);
         }
       );
