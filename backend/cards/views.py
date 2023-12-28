@@ -364,28 +364,41 @@ class CardTradeView(APIView):
         transaction_id = request.data.get('transaction_id')
         logged_user_id = request.user.pk
 
-        transaction = Transaction.objects.get(pk=transaction_id)
+        try:
+            transaction = Transaction.objects.get(pk=transaction_id)
+        except Transaction.DoesNotExist:
+            return Response({'message': 'This Transaction does not exist'}, status=status.HTTP_404_NOT_FOUND)
 
-        if (transaction):
+        try:
             desired_card_owner = Card.objects.get(
-                owner__id=logged_user_id, pk=transaction.desired_card.id)
-            if (desired_card_owner):
-                transaction_data = {
-                    'user': transaction.user.pk,
-                    'buyer': logged_user_id,
-                    'owner_card': transaction.owner_card.id,
-                    'desired_card': transaction.desired_card.id,
-                    'transaction_type': transaction.transaction_type
-                }
-                serializer = TransactionHistorySerializer(
-                    data=transaction_data, context={"request": request})
-                if serializer.is_valid():
-                    serializer.save()
-                else:
-                    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-            else:
-                return Response({'message': "You don't own the card your're trying to trade"})
+                pk=transaction.desired_card.id, owner__id=logged_user_id)
+        except Card.DoesNotExist:
+            return Response({'message': "You don't own the card you're trying to trade"}, status=status.HTTP_404_NOT_FOUND)
 
+        transaction_data = {
+            'user': transaction.user.pk,
+            'buyer': logged_user_id,
+            'owner_card': transaction.owner_card.id,
+            'desired_card': transaction.desired_card.id,
+            'transaction_type': transaction.transaction_type
+        }
+
+        serializer = TransactionHistorySerializer(
+            data=transaction_data, context={"request": request})
+        if serializer.is_valid():
+            card_owner_update = {
+                transaction.owner_card.id: logged_user_id,
+                transaction.desired_card.id: transaction.user.id
+            }
+            for card_id, new_owner in card_owner_update.items():
+                try:
+                    card = Card.objects.get(pk=card_id)
+                except Card.DoesNotExist:
+                    return Response({'message': f"Card with ID {card_id} does not exist"}, status=status.HTTP_404_NOT_FOUND)
+
+                card.owner = new_owner
+                card.save()
+            serializer.save()
             return Response({'message': 'Trade was done successfully'})
         else:
-            return Response({'message': 'This Transaction does not exist'}, status=status.HTTP_404_NOT_FOUND)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
