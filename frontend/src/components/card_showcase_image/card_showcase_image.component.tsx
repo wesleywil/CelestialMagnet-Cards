@@ -1,19 +1,23 @@
 type CardShowcaseImageProps = {
-  card_img: string;
-  card_frame: string;
+  cardImg: string;
+  cardFrame: string;
+  containerWidth: string;
+  containerHeight: string;
+  backgroundSize: string;
+  baseWidth?: string;
+  baseHeight: string;
 };
 
-const CardShowcaseImage = ({
-  card_img,
-  card_frame,
-}: CardShowcaseImageProps) => {
+const CardShowcaseImage = ({ ...props }: CardShowcaseImageProps) => {
   return (
-    <div className="relative w-72 h-96 overflow-hidden">
+    <div
+      className={`relative ${props.containerWidth} ${props.containerHeight} overflow-hidden`}
+    >
       {/* Frame */}
       <div
         style={{
-          backgroundImage: `url(${card_frame})`,
-          backgroundSize: "contain",
+          backgroundImage: `url(${props.cardFrame})`,
+          backgroundSize: `${props.backgroundSize}`,
           backgroundRepeat: "no-repeat",
         }}
         className="w-full h-full absolute top-0 left-0 z-10"
@@ -21,10 +25,10 @@ const CardShowcaseImage = ({
       {/* Base image */}
       <div
         style={{
-          backgroundImage: `url(${card_img})`,
+          backgroundImage: `url(${props.cardImg})`,
           backgroundSize: "cover",
         }}
-        className="w-full h-[22rem] absolute top-0 left-0 z-0"
+        className={`w-full ${props.baseHeight} absolute top-0 left-0 z-0`}
       ></div>
     </div>
   );

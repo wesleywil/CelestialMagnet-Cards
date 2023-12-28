@@ -63,8 +63,12 @@ export default function MyCards() {
 
               <div className="self-center ">
                 <CardShowcaseImage
-                  card_img={card.base_image}
-                  card_frame={card.frame_image!}
+                  cardImg={card.base_image}
+                  cardFrame={card.frame_image!}
+                  containerWidth="w-72"
+                  containerHeight="w-96"
+                  backgroundSize="contain"
+                  baseHeight="h-[22rem]"
                 />
                 {card.tradeable_status ? (
                   <CardShowcaseTradeBtn cardId={card.id!} />

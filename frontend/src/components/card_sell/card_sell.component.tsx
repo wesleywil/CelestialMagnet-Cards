@@ -67,8 +67,12 @@ const CardSell = () => {
         <div className="py-4 flex flex-col items-center">
           <h2 className="mb-1 text-xl font-bold">{card.name}</h2>
           <CardShowcaseImage
-            card_frame={card.frame_image!}
-            card_img={card.base_image}
+            cardFrame={card.frame_image!}
+            cardImg={card.base_image}
+            containerWidth="w-72"
+            containerHeight="w-96"
+            backgroundSize="contain"
+            baseHeight="w-[22rem]"
           />
         </div>
         <form onSubmit={handleSellRequest} className="flex flex-col gap-2">

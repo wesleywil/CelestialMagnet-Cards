@@ -50,13 +50,21 @@ export default function Cards() {
             <div className="self-center ">
               {Object.keys(card).length === 0 ? (
                 <CardShowcaseImage
-                  card_img={groupCards[0].base_image}
-                  card_frame={groupCards[0].frame_image!}
+                  cardImg={groupCards[0].base_image}
+                  cardFrame={groupCards[0].frame_image!}
+                  containerWidth="w-72"
+                  containerHeight="w-96"
+                  backgroundSize="contain"
+                  baseHeight="w-[22rem]"
                 />
               ) : (
                 <CardShowcaseImage
-                  card_img={card.base_image}
-                  card_frame={card.frame_image!}
+                  cardImg={card.base_image}
+                  cardFrame={card.frame_image!}
+                  containerWidth="w-72"
+                  containerHeight="w-96"
+                  backgroundSize="contain"
+                  baseHeight="w-[22rem]"
                 />
               )}
               {/* Card Showcase Menu */}

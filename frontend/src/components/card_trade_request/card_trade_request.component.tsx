@@ -24,8 +24,12 @@ const CardTradeRequest = () => {
           </button>
         </div>
         <CardShowcaseImage
-          card_frame={card_selected.frame_image!}
-          card_img={card_selected.base_image}
+          cardFrame={card_selected.frame_image!}
+          cardImg={card_selected.base_image}
+          containerWidth="w-72"
+          containerHeight="w-96"
+          backgroundSize="contain"
+          baseHeight="w-[22rem]"
         />
         <h2 className="text-2xl font-bold text-center">
           {card_selected.name} - {card_selected.tier}

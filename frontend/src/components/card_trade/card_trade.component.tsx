@@ -49,8 +49,12 @@ const CardTrade = () => {
       <div className="flex gap-2 justify-center">
         <div className="self-center mt-[42px] flex flex-col gap-2">
           <CardShowcaseImage
-            card_frame={card.frame_image!}
-            card_img={card.base_image}
+            cardFrame={card.frame_image!}
+            cardImg={card.base_image}
+            containerWidth="w-72"
+            containerHeight="w-96"
+            backgroundSize="contain"
+            baseHeight="w-[22rem]"
           />
           <h2 className="text-2xl font-bold text-center">
             {card.name} - {card.tier}

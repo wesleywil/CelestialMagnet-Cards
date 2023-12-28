@@ -1,18 +1,20 @@
 import { usePathname } from "next/navigation";
 import { Transaction } from "@/utils/interfaces";
+import { processTransaction } from "@/utils/transactionUtils";
 
 // Components
 import RemoveListing from "../remove_listing/remove_listing.component";
 import TransactionSellButton from "../transaction_sell_button/transaction_sell_button.component";
-import { processTransaction } from "@/utils/transactionUtils";
+import CardShowcaseImage from "../card_showcase_image/card_showcase_image.component";
 
 const TransactionSellItem = ({ transaction }: { transaction: Transaction }) => {
   const pathName = usePathname();
 
   const { ownerCard, user } = processTransaction(transaction);
 
-  const owner_card_frame = `http://localhost:8000${ownerCard.frame_image}`;
-  const owner_card_img = `http://localhost:8000${ownerCard.base_image}`;
+  const url = "http://localhost:8000";
+  const owner_card_frame = `${url}${ownerCard.frame_image}`;
+  const owner_card_img = `${url}${ownerCard.base_image}`;
   return (
     <div
       style={
@@ -41,25 +43,14 @@ const TransactionSellItem = ({ transaction }: { transaction: Transaction }) => {
         <div className="mt-2 py-2 flex justify-center text-[#e6eeee] text-xl ">
           <div className="flex flex-col gap-2">
             <h1 className="text-center">{ownerCard.name}</h1>
-            <div className="relative w-[12rem] h-[15rem] overflow-hidden border">
-              {/* Frame */}
-              <div
-                style={{
-                  backgroundImage: `url(${owner_card_frame})`,
-                  backgroundSize: "cover",
-                  backgroundRepeat: "no-repeat",
-                }}
-                className="w-full h-full absolute top-0 left-0 z-10"
-              ></div>
-              {/* Base Image */}
-              <div
-                style={{
-                  backgroundImage: `url(${owner_card_img})`,
-                  backgroundSize: "cover",
-                }}
-                className="w-full h-full absolute top-0 left-0 z-0"
-              ></div>
-            </div>
+            <CardShowcaseImage
+              cardImg={owner_card_img}
+              cardFrame={owner_card_frame}
+              containerWidth="w-[12rem]"
+              containerHeight="h-[15rem]"
+              backgroundSize="cover"
+              baseHeight="h-full"
+            />
             {/* Price */}
             <h1 className="text-center text-2xl text-[#e05f5f]">
               $ {transaction.price}
