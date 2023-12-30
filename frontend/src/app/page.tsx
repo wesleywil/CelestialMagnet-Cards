@@ -2,6 +2,7 @@ import { Bebas_Neue, Barlow_Condensed } from "next/font/google";
 
 // Components
 import HomeShowcase from "@/components/home_showcase/home_showcase.component";
+import Link from "next/link";
 
 const bebasNeue = Bebas_Neue({ weight: "400", subsets: ["latin"] });
 
@@ -33,9 +34,12 @@ export default function Home() {
           <h2 className="my-2 px-1 text-sm text-gray-300 ">
             Explore, Trade, and Collect Rare Cards in the Celestial Universe
           </h2>
-          <button className="my-4 px-1 text-[#e05f5f] hover:text-[#e6eeee] transform duration-500 ease-in-out">
+          <Link
+            href="/cards"
+            className="my-4 px-1 text-[#e05f5f] hover:text-[#e6eeee] transform duration-500 ease-in-out"
+          >
             Discover More
-          </button>
+          </Link>
         </div>
         <HomeShowcase />
       </div>

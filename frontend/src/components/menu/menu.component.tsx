@@ -12,7 +12,13 @@ const Menu = () => {
   const userStatus = useSelector((state: RootState) => state.user.status);
   const dispatch = useDispatch<AppDispatch>();
 
-  useEffect(() => {}, [userStatus]);
+  useEffect(() => {
+    if (showMenu) {
+      setTimeout(() => {
+        setShowMenu(false);
+      }, 5000);
+    }
+  }, [userStatus, showMenu]);
 
   return (
     <div className="absolute w-full flex flex-col justify-center z-50">
@@ -26,7 +32,7 @@ const Menu = () => {
         onMouseLeave={() =>
           setTimeout(() => {
             setShowMenu(false);
-          }, 2000)
+          }, 3000)
         }
         style={
           showMenu
@@ -37,11 +43,13 @@ const Menu = () => {
       >
         <Link
           href="/"
-          className="mt-8 p-2 relative flex items-center justify-center border border-[#e6eeee] hover:border-[#e05f5f] rounded-full shadow-xl transform duration-500 ease-in-out"
+          className="mt-8 p-2 relative flex items-center justify-center rounded-full shadow-xl"
         >
-          <h1 className="text-5xl text-[#e6eeee] hover:text-[#e05f5f] transform duration-500 ease-in-out">
-            <FaHome />
-          </h1>
+          <img
+            src="/logo.webp"
+            alt="Logo"
+            className="w-16 h-16 border border-[#e6eeee] hover:border-[#e05f5f] rounded-full transform duration-500 ease-in-out"
+          />
         </Link>
         <div className="w-full flex flex-col items-center gap-2 font-bold text-[#e05f5f]  text-2xl">
           <Link
