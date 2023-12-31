@@ -14,6 +14,7 @@ import CardTypeFilter from "@/components/card_type_filter/card_type_filter.compo
 import CardShowcaseMenu from "@/components/card_showcase_menu/card_showcase_menu.component";
 import CardShowcaseImage from "@/components/card_showcase_image/card_showcase_image.component";
 import CardShowcaseInfo from "@/components/card_showcase_info/card_showcase_info.component";
+import { group } from "console";
 
 export default function Cards() {
   const hideCardShowcase = useSelector(
@@ -53,18 +54,18 @@ export default function Cards() {
                   cardImg={groupCards[0].base_image}
                   cardFrame={groupCards[0].frame_image!}
                   containerWidth="w-72"
-                  containerHeight="w-96"
+                  containerHeight="h-96"
                   backgroundSize="contain"
-                  baseHeight="w-[22rem]"
+                  baseHeight="h-[22rem]"
                 />
               ) : (
                 <CardShowcaseImage
                   cardImg={card.base_image}
                   cardFrame={card.frame_image!}
                   containerWidth="w-72"
-                  containerHeight="w-96"
+                  containerHeight="h-96"
                   backgroundSize="contain"
-                  baseHeight="w-[22rem]"
+                  baseHeight="h-[22rem]"
                 />
               )}
               {/* Card Showcase Menu */}

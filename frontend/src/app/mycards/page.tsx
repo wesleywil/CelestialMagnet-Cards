@@ -66,7 +66,7 @@ export default function MyCards() {
                   cardImg={card.base_image}
                   cardFrame={card.frame_image!}
                   containerWidth="w-72"
-                  containerHeight="w-96"
+                  containerHeight="h-96"
                   backgroundSize="contain"
                   baseHeight="h-[22rem]"
                 />
