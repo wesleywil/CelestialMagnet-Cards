@@ -1,11 +1,12 @@
 import { usePathname, useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
-import type { AppDispatch } from "@/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "@/redux/store";
 import { selectTransactionById } from "@/redux/transactions/transactions";
 
 const TransactionSellButton = ({ id }: { id: number }) => {
   const router = useRouter();
   const pathName = usePathname();
+  const userStatus = useSelector((state:RootState)=> state.user.status);
   const dispatch = useDispatch<AppDispatch>();
 
   const handlePaymentOptions = async () => {
@@ -13,10 +14,12 @@ const TransactionSellButton = ({ id }: { id: number }) => {
     router.push("/payment");
   };
 
+
+
   return (
     <>
-      {pathName === "/mytransactions" ? (
-        ""
+      {pathName === "/mytransactions" || userStatus === "user info failed to be retrieved"? (
+        <div className="w-full mb-2 h-8"></div>
       ) : (
         <button
           onClick={handlePaymentOptions}
@@ -27,6 +30,7 @@ const TransactionSellButton = ({ id }: { id: number }) => {
       )}
     </>
   );
+
 };
 
 export default TransactionSellButton;

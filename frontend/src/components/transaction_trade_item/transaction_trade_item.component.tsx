@@ -1,15 +1,15 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { usePathname } from "next/navigation";
 import { FaArrowRight } from "react-icons/fa";
 import { Transaction } from "@/utils/interfaces";
 import { processTransaction } from "@/utils/transactionUtils";
-import type { AppDispatch } from "@/redux/store";
+import type { AppDispatch, RootState } from "@/redux/store";
 import { tradeCardTransaction } from "@/redux/transactions/transactions";
 
 // Components
 import RemoveListing from "../remove_listing/remove_listing.component";
 import CardShowcaseImage from "../card_showcase_image/card_showcase_image.component";
+import TransactionTradeButton from "../transaction_trade_button/transaction_trade_button.component";
 
 const TransactionTradeItem = ({
   transaction,
@@ -17,7 +17,7 @@ const TransactionTradeItem = ({
   transaction: Transaction;
 }) => {
   const pathName = usePathname();
-  const [hideConfirmation, setHideConfirmation] = useState(true);
+  const userStatus = useSelector((state:RootState)=> state.user.status);
   const dispatch = useDispatch<AppDispatch>();
 
   const { ownerCard, desiredCard, user } = processTransaction(transaction);
@@ -86,38 +86,10 @@ const TransactionTradeItem = ({
             />
           </div>
         </div>
-        {pathName === "/mytransactions" ? (
-          ""
+        {pathName === "/mytransactions" || userStatus === "user info failed to be retrieved" ? (
+          <div className="h-8"></div>
         ) : (
-          <div className="flex flex-col">
-            {hideConfirmation ? (
-              <button
-                onClick={() => setHideConfirmation(false)}
-                className="w-full py-1 bg-[#e05f5f] hover:bg-[#e6eeee] font-bold uppercase transform duration-500 ease-in-out"
-              >
-                Action
-              </button>
-            ) : (
-              <div className="w-full flex flex-col items-center bg-[#e05f5f] text-2xl transform duration-500 ease-in-out">
-                <h1 className="text-white">Are you relly making this trade?</h1>
-                <div className="flex justify-center gap-2">
-                  <button
-                    onClick={handleTrade}
-                    className="px-2 bg-[#1e2027] hover:bg-[#e6eeee] text-[#e6eeee] hover:text-[#1e2027] rounded transform duration-500 ease-in-out"
-                  >
-                    YES
-                  </button>
-                  |{" "}
-                  <button
-                    onClick={() => setHideConfirmation(true)}
-                    className="px-2 bg-[#1e2027] hover:bg-[#e6eeee] text-[#e6eeee] hover:text-[#1e2027] rounded transform duration-500 ease-in-out"
-                  >
-                    NO
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
+          <TransactionTradeButton transaction={transaction}/>
         )}
       </div>
     </div>

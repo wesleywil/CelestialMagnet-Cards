@@ -1,11 +1,13 @@
 "use client";
 
+import Link from "next/link";
 import { Bebas_Neue } from "next/font/google";
+import { motion } from "framer-motion";
+
 
 // Components
 import HomeShowcase from "@/components/home_showcase/home_showcase.component";
-import Link from "next/link";
-import { motion } from "framer-motion";
+
 
 const bebasNeue = Bebas_Neue({ weight: "400", subsets: ["latin"] });
 
